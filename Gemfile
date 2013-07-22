@@ -24,6 +24,8 @@ gem 'therubyracer', platforms: :ruby
 #gem 'libv8'#, '~> 3.11.8'
 
 group :test, :development do
+  gem 'pry'
+  gem 'pry-debugger'
   gem 'rspec-rails'
   gem 'capybara'
   #gem 'capybara-email'

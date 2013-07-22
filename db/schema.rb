@@ -11,9 +11,37 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 0) do
+ActiveRecord::Schema.define(version: 20130722015947) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "accounts", force: true do |t|
+    t.string   "name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "periods", force: true do |t|
+    t.string   "status"
+    t.datetime "opened_at"
+    t.datetime "closed_at"
+    t.json     "opening_balances"
+    t.json     "closing_balances"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "transactions", force: true do |t|
+    t.string   "description"
+    t.string   "kind"
+    t.integer  "amount"
+    t.string   "status"
+    t.json     "shares"
+    t.integer  "period_id"
+    t.integer  "account_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
 end
