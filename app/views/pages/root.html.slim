@@ -1,12 +1,18 @@
-javascript:
-  $(document).ready(function() {
-    $('.hero-unit p:last').after("<p>Enjoy!</p>")
-  });
-
 .hero-unit
-  h1 Hello, world!
+  h1 De Haro
   br
-  p Welcome to your newly generated rails application...
-  p Meander around the code to see what's been done for you. Many small, and a few not-so-small, customizations have been made.
-  p Custom generator templates create views that are bootstrap compatible and specs that are factory-aware and follow best practices.
-  p Your applicated is ready for easy deployment to heroku.
+
+  h3 Creating Accounts
+  p Each account can be either personal or corporate. Residents have personal accounts, False Profit has a corporate account. To create an account, click "accounts" at the top of the screen, and enter a name for the account. Accounts can be active or inactive, but can't be deleted. Inactive accounts are hidden from the menu in the expense form.
+
+  h3 Entering Expenses
+  p To enter an expense, click the "add" link at the top of the screen. Select the account of the person who made the expense, and enter a description. For evenly distributed shares, enter "1" for each resident, or click the "Equal Shares" button to enter the shares automatically. You can then change the shares manually.
+
+  h3 Entering Rent
+  p All accounts (personal and corporate) behave the same. So, to enter rent as a household expense, select "False Profit" as the account and enter shares for each resident.
+
+  h3 Paying Rent
+  p To pay rent as a resident, select the name of the resident and set False Profit's shares to 1 (or click the "Pay Rent" button to enter the shares automatically)
+
+  h3 Closing a Period
+  p Each expense is entered as part of a period. There is only one active period at any given time. Each period has a starting oweage and an ending oweage for each account. When a period is closed, the oweage for each account is saved as the starting oweage for the period, and cannot be changed. Each account's oweage is calculated based on the starting oweage and all transactions in that period.
