@@ -2,11 +2,31 @@
   h1 De Haro
   br
 
-  h3 Creating Accounts
-  p Each account can be either personal or corporate. Residents have personal accounts, False Profit has a corporate account. To create an account, click "accounts" at the top of the screen, and enter a name for the account. Accounts can be active or inactive, but can't be deleted. Inactive accounts are hidden from the menu in the expense form.
+  h3 Balances
+  ul
+    li
+      strong Opening:
+      '
+      span The account balance carried over from the last period. A positive balance means the account is in the black, i.e., nothing is owed. A negative balance means money is owed.
+    li
+      strong Shares:
+      '
+      span The total shared transaction costs incurred by the account during this period.
+    li
+      strong Payments:
+      '
+      span The total of the expenses entered into the system by this account.
+    li
+      strong Oweage:
+      '
+      span The total amount owed by this account. Note that this is actually the <strong>opposite</strong> of the current account balance, i.e. if an account has a positive balance of $20, the oweage is negative $20 and nothing is owed. Yes, I think this is kind of confusing, too.
+    li
+      strong Closing:
+      '
+      span The account balance when the period was closed. Note that this is the <strong>opposite</strong> of the oweage amount. This will also be the opening account balance for the next period.
 
   h3 Entering Expenses
-  p To enter an expense, click the "add" link at the top of the screen. Select the account of the person who made the expense, and enter a description. For evenly distributed shares, enter "1" for each resident, or click the "Equal Shares" button to enter the shares automatically. You can then change the shares manually.
+  p To enter an expense, click the "add" link at the top of the screen. A new transaction will be created in the current period. Select the account of the person who made the expense, and enter a description. For evenly distributed shares, enter "1" for each resident, or click the "Equal Shares" button to enter the shares automatically. You can then change the shares manually. Note that a transaction can't be changed once its period has been closed.
 
   h3 Entering Rent
   p All accounts (personal and corporate) behave the same. So, to enter rent as a household expense, select "False Profit" as the account and enter shares for each resident.
@@ -14,5 +34,5 @@
   h3 Paying Rent
   p To pay rent as a resident, select the name of the resident and set False Profit's shares to 1 (or click the "Pay Rent" button to enter the shares automatically)
 
-  h3 Closing a Period
-  p Each expense is entered as part of a period. There is only one active period at any given time. Each period has a starting oweage and an ending oweage for each account. When a period is closed, the oweage for each account is saved as the starting oweage for the period, and cannot be changed. Each account's oweage is calculated based on the starting oweage and all transactions in that period.
+  h3 Periods
+  p Each expense is entered as part of a period. There is only one active period at any given time, and you can view it by clicking the "current" link at the top of the page. Each period has a starting balance and an ending balance for each account. When a period is closed, the balance for each account is saved as the starting balance for the period, and cannot be changed. Each account's oweage is calculated based on the starting balance and all transactions in that period.

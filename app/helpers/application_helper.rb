@@ -27,5 +27,4 @@ module ApplicationHelper
   def account_name(account_id)
     Account.find(account_id).name
   end
-
 end

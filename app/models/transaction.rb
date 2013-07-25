@@ -9,6 +9,19 @@ class Transaction < ActiveRecord::Base
   validates :amount, numericality: { only_integer: true }
   validates :account_id, presence: true
 
+  def total_shares
+    shares.values.map{|s| s.to_i}.sum.to_i
+  end
+
+  def share_amount_for_account_id(account_id)
+    account_shares = shares[account_id.to_s] || 0
+    if total_shares > 0
+      (amount * (account_shares.to_f / total_shares.to_f)).round
+    else
+      0
+    end
+  end
+
   private
 
   def period_open

@@ -1,13 +1,13 @@
 table.table.table-striped
   tr
     th period
-    th show
+    th status
     th opened
     th closed
 
   - @periods.each do |period|
     tr
       td= period.id
-      td= link_to "show", period_path(period.id)
-      td= period.opened_at
-      td= period.closed_at
+      td= link_to period.status, period_path(period.id)
+      td= period.opened_at.localtime
+      td= period.closed_at.try(:localtime)

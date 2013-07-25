@@ -1,15 +1,17 @@
-h2 Transactions
+h2 Period #{@period.id} Transactions for #{@account.name}
 
 table.table.table-striped
   tr
     th id
-    th acct
-    th amount
+    th purchaser
+    th share (#{@account.name})
+    th total
     th created
 
   - @transactions.each do |transaction|
     tr
       td= transaction.id
-      td= transaction.account_id
-      td= transaction.amount
+      td= link_to transaction.account.name, period_account_transactions_path(transaction.period, transaction.account)
+      td= cents_to_currency(transaction.share_amount_for_account_id(@account.id))
+      td= link_to cents_to_currency(transaction.amount), edit_period_transaction_path(transaction.period, transaction)
       td= transaction.created_at

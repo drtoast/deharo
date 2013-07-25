@@ -1,18 +1,22 @@
-h4 Oweages
+h4 Balances
 
 table.table.table-striped
   tr
     th account
     th opening
-    th current
+    th shares
+    th payments
+    th oweage
     th closing
 
   - @summary.each do |account, balances|
     tr
       td= account.name
-      td= balance_to_oweage(balances[:opening])
-      td= balance_to_oweage(balances[:current])
-      td= @period.closed? ? balance_to_oweage(balances[:closing]) : ''
+      td= cents_to_currency(balances[:opening])
+      td= cents_to_currency(0 - balances[:shares])
+      td= cents_to_currency(balances[:payments])
+      td= link_to balance_to_oweage(balances[:current]), period_account_transactions_path(@period, account)
+      td= @period.closed? ? cents_to_currency(balances[:closing]) : ''
 
 - unless @period.closed?
   = button_to "Close Period", { action: "close", id: @period.id }, method: :put, class: 'btn btn-primary', data: { confirm: "Finalize and close this period?" }
@@ -21,7 +25,7 @@ h4 Transactions
 
 table.table.table-striped
   tr
-    th account
+    th purchaser
     th id
     th amount
     th description
@@ -29,8 +33,8 @@ table.table.table-striped
 
   - @period.transactions.order('created_at DESC').each do |transaction|
     tr
-      td= account_name(transaction.account_id)
+      td= link_to transaction.account.name, period_account_transactions_path(@period, transaction.account)
       td= transaction.id
       td= link_to cents_to_currency(transaction.amount), edit_period_transaction_path(@period, transaction)
       td= transaction.description
-      td= transaction.created_at
+      td= transaction.created_at.localtime

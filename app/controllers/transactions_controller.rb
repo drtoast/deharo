@@ -59,6 +59,7 @@ class TransactionsController < ApplicationController
   end
 
   def index
+    @account = Account.find(params[:account_id]) if params[:account_id]
     @transactions = period.transactions.order('created_at DESC')
   end
 

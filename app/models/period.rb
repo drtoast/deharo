@@ -10,7 +10,7 @@ class Period < ActiveRecord::Base
 
   def close!
     return false if status == STATUSES[:closed]
-    self.closing_balances = Balance.new(self).balances
+    self.closing_balances = get_closing_balances
     self.closed_at = Time.now
     self.status = STATUSES[:closed]
     save!
@@ -32,6 +32,14 @@ class Period < ActiveRecord::Base
   end
 
   private
+
+  def get_closing_balances
+    closing = {}
+    Balance.new(self).balances.each do |account_id, summary|
+      closing[account_id.to_s] = summary[:balance]
+    end
+    closing
+  end
 
   def set_defaults
     self.status ||= STATUSES[:open]
