@@ -1,6 +1,6 @@
 # De Haro
 
-De Haro is a system for sharing expenses in a communal household. It was inspired by the venerable
+De Haro is a system for sharing expenses in a communal household. It was inspired by the venerable [Norfolk](http://sourceforge.net/projects/norfolk/) household financial manager.
 
 It was written over a few days as a proof of concept, so there are some things missing and things to clean up. Issues and pull requests gladly accepted! Known issues:
 
