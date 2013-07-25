@@ -1,8 +1,19 @@
-# Deharo
+# De Haro
 
-...
+De Haro is a system for sharing expenses in a communal household. It was inspired by the venerable
 
-Generated with [Raygun](https://github.com/carbonfive/raygun).
+It was written over a few days as a proof of concept, so there are some things missing and things to clean up. Issues and pull requests gladly accepted! Known issues:
+
+* Many more tests need to be written, and then a big refactor.
+* Naive rounding of cents for shared transactions means that individual shares sometimes don't add up to the total expense.
+* Either add individual authenticated user accounts, each authorized for one or more financial accounts, or add HTTP basic auth for the site and trust the crap out of users.
+
+
+# Thanks
+
+Inspired by [Norfolk](http://sourceforge.net/projects/norfolk/) household financial manager, by [Ben Chun](http://benchun.net).
+
+Initial app generated with [Raygun](https://github.com/carbonfive/raygun).
 
 # Requirements
 
@@ -21,8 +32,6 @@ After cloning, run these commands to install missing gems and prepare the databa
     $ gem install bundler
     $ bundle update
     $ rake db:setup db:sample_data
-
-Note, ```rake db:sample_data``` loads a small set of data for development. Check out ```db/sample_data.rb``` for details.
 
 ### Running the Specs
 

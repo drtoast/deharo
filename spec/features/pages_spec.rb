@@ -2,17 +2,10 @@ require 'spec_helper'
 
 feature "Static Pages" do
 
-  # Here's a placeholder feature spec to use as an example, uses the default driver.
-  scenario "/ should include the application name in its title" do
-    visit root_path
+  scenario "/help should include help text" do
+    Period.create
+    visit "/help"
 
-    expect(page).to have_title "Deharo"
-  end
-
-  # Another contrived example, this one relies on the javascript driver.
-  scenario "/ should include the warm closing text 'Enjoy!'", js: true do
-    visit root_path
-
-    expect(page).to have_content "Enjoy!"
+    expect(page).to have_content "Entering Expenses"
   end
 end
