@@ -1,6 +1,8 @@
 class Period < ActiveRecord::Base
   has_many :transactions
 
+  before_create :set_defaults
+
   STATUSES = {
     closed: 'closed',
     open: 'open'
@@ -28,4 +30,14 @@ class Period < ActiveRecord::Base
     raise "ERROR: #{periods.length} open periods (must be exactly 1)" unless periods.length == 1
     periods.first
   end
+
+  private
+
+  def set_defaults
+    self.status ||= STATUSES[:open]
+    self.opened_at = Time.now
+    self.opening_balances ||= {}
+    self.closing_balances ||= {}
+  end
+
 end

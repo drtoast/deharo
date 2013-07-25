@@ -1,0 +1,15 @@
+h2 Transactions
+
+table.table.table-striped
+  tr
+    th id
+    th acct
+    th amount
+    th created
+
+  - @transactions.each do |transaction|
+    tr
+      td= transaction.id
+      td= transaction.account_id
+      td= transaction.amount
+      td= transaction.created_at

@@ -5,6 +5,9 @@ class Transaction < ActiveRecord::Base
   # scope :expense, -> { where(kind: 'expense') }
   # scope :payment, -> { where(kind: 'payment') }
   validate :period_open
+  validates :description, presence: true, length: { minimum: 1 }
+  validates :amount, numericality: { only_integer: true }
+  validates :account_id, presence: true
 
   private
 

@@ -7,7 +7,6 @@ class Balance
     opening       = opening_balances(@period)
     transactions  = transaction_amounts(@period)
     payments      = account_payments(@period)
-
     results = {}
     accounts.each do |account|
       opening_balance     = opening[account.id.to_s] || 0
@@ -37,7 +36,7 @@ class Balance
   end
 
   def transaction_total_shares(transaction)
-    transaction.shares.values.sum.to_i
+    transaction.shares.values.map{|s| s.to_i}.sum.to_i
   end
 
   def transaction_amount(transaction, shares, total_shares)

@@ -1,7 +1,7 @@
 doctype 5
 html
   head
-    title Deharo
+    title De Haro
     = stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true
     = javascript_include_tag 'application', 'data-turbolinks-track' => true
     = csrf_meta_tag
@@ -12,7 +12,12 @@ html
         header.navbar.navbar-fixed-top
           nav.navbar-inner
             .container
-              .brand Deharo
+              .brand De Haro
+              ul.nav
+                li= link_to 'current', period_path(controller.current_period)
+                li= link_to 'add', new_period_transaction_path(controller.current_period)
+                li= link_to 'history', periods_path
+                li= link_to 'accounts', accounts_path
               /ul.nav.pull-right
               /  - if current_user
               /    li.dropdown
