@@ -1,39 +1,36 @@
 class TransactionsController < ApplicationController
   def new
     accounts
-    @transaction = period.transactions.build shares: {}
+    @transaction = Transaction.new shares: {}
   end
 
   def create
     accounts
-    @transaction = period.transactions.build(transaction_params)
-    if period.open?
-      if @transaction.save
-        flash[:notice] = "Transaction created"
-        redirect_to period_path(Period.open)
-      else
-        flash[:error] = "Can't create transaction: #{@transaction.errors.full_messages.to_sentence}"
-        render :new
-      end
+    @transaction = current_period.transactions.build(transaction_params)
+    if @transaction.save
+      flash[:notice] = "Transaction created"
+      redirect_to period_path(current_period)
     else
-      flash[:error] = "Can't create transaction: period is closed"
+      flash[:error] = "Can't create transaction: #{@transaction.errors.full_messages.to_sentence}"
       render :new
     end
   end
 
   def update
     accounts
-    @transaction = period.transactions.find params[:id]
-    if period.open?
+    @transaction = Transaction.find params[:id]
+    if @transaction.period.open?
       if @transaction.update_attributes(transaction_params)
         flash[:notice] = "Transaction #{@transaction.id} updated"
+        redirect_to period_path(current_period)
       else
         flash[:error] = "Can't update transaction: #{@transaction.errors.full_messages.to_sentence}"
+        render :edit
       end
     else
       flash[:error] = "Can't update transaction: period is closed"
+      render :edit
     end
-    render :edit
   end
 
   def edit
@@ -43,11 +40,11 @@ class TransactionsController < ApplicationController
 
   def destroy
     accounts
-    @transaction = period.transactions.find params[:id]
-    if period.open?
+    @transaction = Transaction.find params[:id]
+    if @transaction.period.open?
       if @transaction.destroy
         flash[:notice] = "Transaction deleted"
-        redirect_to period_path(Period.open)
+        redirect_to period_path(current_period)
       else
         flash[:error] = "Can't delete transaction: #{@transaction.errors.full_messages.to_sentence}"
         render :edit
@@ -64,10 +61,6 @@ class TransactionsController < ApplicationController
   end
 
   private
-
-  def accounts
-    @accounts ||= Account.active
-  end
 
   def period
     @period ||= Period.find(params[:period_id])

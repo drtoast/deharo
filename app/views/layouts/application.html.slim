@@ -14,8 +14,8 @@ html
             .container
               .brand De Haro
               ul.nav
-                li= link_to 'current', period_path(controller.current_period)
-                li= link_to 'add', new_period_transaction_path(controller.current_period)
+                li= link_to 'current', current_periods_path
+                li= link_to 'add', new_transaction_path
                 li= link_to 'history', periods_path
                 li= link_to 'accounts', accounts_path
                 li= link_to 'help', "/help"

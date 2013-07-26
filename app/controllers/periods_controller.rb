@@ -4,8 +4,12 @@ class PeriodsController < ApplicationController
     @summary = Balance.new(accounts).calculate(@period)
   end
 
+  def current
+    redirect_to period_path(current_period)
+  end
+
   def index
-    @periods = Period.all
+    @periods = Period.all.order('created_at DESC')
   end
 
   def update
@@ -15,7 +19,7 @@ class PeriodsController < ApplicationController
     @period = Period.find params[:id]
     if @period.close!(accounts)
       flash[:notice] = "Period #{@period.id} closed, opening period #{@period.id + 1}"
-      redirect_to period_path(Period.open)
+      redirect_to period_path(current_period)
     else
       flash[:error] = "Could not close period #{@period.id}"
       redirect_to period_path(@period)
@@ -23,12 +27,6 @@ class PeriodsController < ApplicationController
   end
 
   def current
-    redirect_to period_path(Period.open)
-  end
-
-  private
-
-  def accounts
-    Account.all
+    redirect_to period_path(current_period)
   end
 end

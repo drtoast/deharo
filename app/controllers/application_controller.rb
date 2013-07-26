@@ -8,7 +8,12 @@ class ApplicationController < ActionController::Base
   end
 
   def all_accounts
-    Account.all
+    @all_accounts ||= Account.all
   end
 
+  private
+
+  def accounts
+    @accounts ||= Account.active
+  end
 end

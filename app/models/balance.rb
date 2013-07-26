@@ -38,7 +38,7 @@ class Balance
     period.transactions.each do |transaction|
       @accounts.each do |account|
         result[account] ||= 0
-        result[account] += transaction.share_amount_for_account(account)
+        result[account] += transaction.amount_for_account(account)
       end
     end
     result

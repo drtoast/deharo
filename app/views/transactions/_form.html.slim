@@ -38,4 +38,4 @@
   .form-horizontal
     .control-group
       .controls
-        = button_to "Delete Transaction", [@period, @transaction], method: :delete, class: 'btn btn-danger', data: {confirm: "Delete transaction?"}
+        = button_to "Delete Transaction", @transaction, method: :delete, class: 'btn btn-danger', data: {confirm: "Delete transaction?"}

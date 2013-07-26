@@ -26,15 +26,15 @@ h4 Transactions
 table.table.table-striped
   tr
     th purchaser
-    th id
-    th amount
     th description
+    th amount
     th created
+    th id
 
   - @period.transactions.order('created_at DESC').each do |transaction|
     tr
       td= link_to transaction.account.name, period_account_transactions_path(@period, transaction.account)
-      td= transaction.id
-      td= link_to cents_to_currency(transaction.amount), edit_period_transaction_path(@period, transaction)
       td= transaction.description
+      td= link_to cents_to_currency(transaction.amount), edit_period_transaction_path(@period, transaction)
       td= transaction.created_at.localtime
+      td= transaction.id

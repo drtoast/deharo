@@ -8,7 +8,7 @@ class AccountsController < ApplicationController
 
     if @account.save
       flash[:notice] = "Account created"
-      redirect_to period_path(Period.open)
+      redirect_to period_path(current_period)
     else
       flash[:error] = "Can't create account: #{@account.errors.full_messages.to_sentence}"
       render :new
