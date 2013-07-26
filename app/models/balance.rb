@@ -1,59 +1,44 @@
 class Balance
-  def initialize(period)
-    @period = period
+  def initialize(accounts)
+    @accounts = accounts
   end
 
-  def balances
-    opening       = opening_balances(@period)
-    transactions  = transaction_amounts(@period)
-    payments      = account_payments(@period)
-    results = {}
-    accounts.each do |account|
-      opening_balance     = opening[account.id.to_s] || 0
-      transaction_shares  = transactions[account.id.to_s] || 0
-      total_payments      = payments[account.id.to_s] || 0
-      results[account.id] = {
-        payments: total_payments,
+  def calculate(period)
+    @results = {}
+    transactions = transaction_amounts(period)
+    @accounts.each do |account|
+      total_payments      = payments(period, account)
+      transaction_shares  = transactions[account] || 0
+      opening_balance = period.opening_balances[account.id.to_s] || 0
+      closing_balance = period.closing_balances[account.id.to_s] || 0
+
+      @results[account] = {
+        opening: opening_balance,
         shares: transaction_shares,
-        balance: opening_balance - transaction_shares + total_payments
+        payments: total_payments,
+        balance: opening_balance - transaction_shares + total_payments,
+        closing: closing_balance
       }
     end
-    results
+    @results
+  end
+
+  def for(account)
+    @results[account]
   end
 
   private
 
-  def opening_balances(period)
-    period.opening_balances
-  end
-
-  def accounts
-    @accounts ||= Account.all
-  end
-
-  def account_payments(period)
-    payments = {}
-    accounts.each do |account|
-      payments[account.id.to_s] = account.transactions.where(period_id: period.id).sum(:amount)
-    end
-    payments
-  end
-
-  def transaction_amount(transaction, shares, total_shares)
-    if total_shares > 0
-      (transaction.amount * (shares.to_f / total_shares.to_f)).round
-    else
-      0
-    end
+  def payments(period, account)
+    account.transactions.where(period_id: period.id).sum(:amount)
   end
 
   def transaction_amounts(period)
     result = {}
     period.transactions.each do |transaction|
-      total_shares = transaction.total_shares
-      transaction.shares.each do |account_id, shares|
-        result[account_id] ||= 0
-        result[account_id] += transaction_amount(transaction, shares, total_shares)
+      @accounts.each do |account|
+        result[account] ||= 0
+        result[account] += transaction.share_amount_for_account(account)
       end
     end
     result

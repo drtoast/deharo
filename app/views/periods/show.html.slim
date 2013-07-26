@@ -15,7 +15,7 @@ table.table.table-striped
       td= cents_to_currency(balances[:opening])
       td= cents_to_currency(0 - balances[:shares])
       td= cents_to_currency(balances[:payments])
-      td= link_to balance_to_oweage(balances[:current]), period_account_transactions_path(@period, account)
+      td= link_to balance_to_oweage(balances[:balance]), period_account_transactions_path(@period, account)
       td= @period.closed? ? cents_to_currency(balances[:closing]) : ''
 
 - unless @period.closed?

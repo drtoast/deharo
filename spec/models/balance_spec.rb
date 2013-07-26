@@ -5,12 +5,15 @@ describe Balance do
   let(:p1) { Account.create name: 'Person 1' }
   let(:p2) { Account.create name: 'Person 2' }
   let(:fp) { Account.create name: 'False Profit, LLC' }
+  let(:accounts) { [p1, p2, fp] }
   let(:period1) { Period.create }
   let(:balance) { Balance.new(period1) }
 
   def account_balance(account, period)
-    balances = Balance.new(period).balances
-    balances[account.id][:balance]
+    accounts = [account]
+    balance = Balance.new(accounts)
+    balance.calculate(period)
+    balance.for(account)[:balance]
   end
 
   context 'calculating a balance' do
@@ -39,7 +42,6 @@ describe Balance do
       }
       Transaction.create(attrs)
       period1.reload
-      balances = balance.balances
       expect(account_balance(p1, period1)).to eq(-475)
       expect(account_balance(p2, period1)).to eq(-525)
       expect(account_balance(fp, period1)).to eq(1000)
@@ -68,13 +70,12 @@ describe Balance do
       }
       Transaction.create(attrs)
       period1.reload
-      balances = balance.balances
       expect(account_balance(p1, period1)).to eq(125)
       expect(account_balance(p2, period1)).to eq(-125)
       expect(account_balance(fp, period1)).to eq(0)
 
       # close period
-      period1.close!
+      period1.close!(accounts)
       period2 = Period.open
       expect(account_balance(p1, period2)).to eq(125)
       expect(account_balance(p2, period2)).to eq(-125)
@@ -94,6 +95,21 @@ describe Balance do
       expect(account_balance(p2, period2)).to eq(-150)
       expect(account_balance(fp, period2)).to eq(0)
 
+    end
+
+    it 'rounds fractional cents' do
+      attrs = {
+        account: p1,
+        period: period1,
+        description: 'groceries',
+        amount: 333,
+        shares: { p1.id => 1, p2.id => 1 }
+      }
+      Transaction.create!(attrs)
+
+      expect(account_balance(p1, period1)).to eq(167)
+      expect(account_balance(p2, period1)).to eq(167)
+      expect(account_balance(fp, period1)).to eq(0)
     end
   end
 end
