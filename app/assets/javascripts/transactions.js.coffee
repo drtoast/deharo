@@ -24,7 +24,6 @@ onLoad = ->
 
   update_amount_dollars = ->
     $amount_dollars.val($amount_cents.val() / 100.0)
-    console.log "update_amount_dollars: #{$amount_dollars.val()}"
 
   update_share_dollars = ->
     for share in $all_shares
