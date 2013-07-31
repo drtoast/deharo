@@ -11,7 +11,6 @@ class Balance
       transaction_shares  = transactions[account] || 0
       opening_balance = period.opening_balances[account.id.to_s] || 0
       closing_balance = period.closing_balances[account.id.to_s] || 0
-
       @results[account] = {
         opening: opening_balance,
         shares: transaction_shares,

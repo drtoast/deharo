@@ -20,7 +20,8 @@ onLoad = ->
     total
 
   update_amount_cents = ->
-    $amount_cents.val($amount_dollars.val() * 100)
+    cents = $amount_dollars.val() * 100
+    $amount_cents.val(cents)
 
   update_amount_dollars = ->
     $amount_dollars.val($amount_cents.val() / 100.0)

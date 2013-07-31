@@ -98,6 +98,7 @@ describe Balance do
     end
 
     it 'rounds fractional cents' do
+      puts "rounds fractional cents"
       attrs = {
         account: p1,
         period: period1,
@@ -105,10 +106,11 @@ describe Balance do
         amount: 333,
         shares: { p1.id => 1, p2.id => 1 }
       }
-      Transaction.create!(attrs)
-
-      expect(account_balance(p1, period1)).to eq(167)
-      expect(account_balance(p2, period1)).to eq(167)
+      transaction = Transaction.create!(attrs).reload
+      expect(transaction.amount_for_account(p1)).to eq(167)
+      expect(transaction.amount_for_account(p2)).to eq(167)
+      expect(account_balance(p1, period1)).to eq(166)
+      expect(account_balance(p2, period1)).to eq(-167)
       expect(account_balance(fp, period1)).to eq(0)
     end
   end
