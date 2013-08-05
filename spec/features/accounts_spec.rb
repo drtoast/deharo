@@ -6,12 +6,13 @@ feature "Accounts" do
     Period.create
     visit "/accounts"
 
-    expect(page).to have_content "Name"
+    expect(page).to have_content("Name")
 
     within '#new_account' do
 
-    fill_in "account_name", with: 'Dr. Toast'
-    click_button 'Create Account'
+      fill_in "account_name", with: 'Dr. Toast'
+      click_button 'Create Account'
+    end
 
     account = Account.last
 
