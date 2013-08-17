@@ -13,7 +13,7 @@ module ApplicationHelper
   end
 
   def cents_to_currency(cents)
-    number_to_currency(cents_to_dollars(cents))
+    number_to_currency(cents_to_dollars(cents.to_i))
   end
 
   def dollars_to_cents(dollars)

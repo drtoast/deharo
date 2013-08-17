@@ -37,9 +37,9 @@ feature "Transactions" do
 
     visit "/"
 
-    expect(find('table.balances tr:nth-child(1)').text).to eq("account opening shares payments oweage closing")
-    expect(find('table.balances tr:nth-child(2)').text).to eq("Dr. Toast $5.00 -$18.33 $20.00 -$6.67")
-    expect(find('table.balances tr:nth-child(3)').text).to eq("Shipwrek $10.00 -$26.67 $25.00 -$8.33")
+    expect(find('table.balances tr:nth-child(1)').text).to eq("account opening debits credits current closing")
+    expect(find('table.balances tr:nth-child(2)').text).to eq("Dr. Toast $5.00 -$18.33 $20.00 $6.67")
+    expect(find('table.balances tr:nth-child(3)').text).to eq("Shipwrek $10.00 -$26.67 $25.00 $8.33")
     expect(find('table.balances tr:nth-child(4)').text).to eq("False Profit $0.00 $0.00 $0.00 $0.00")
 
     click_button "Close Period"
@@ -55,9 +55,9 @@ feature "Transactions" do
     expect(p2.status).to eq('open')
     expect(p2.opening_balances).to eq(p1.closing_balances)
 
-    expect(find('table.balances tr:nth-child(1)').text).to eq("account opening shares payments oweage closing")
-    expect(find('table.balances tr:nth-child(2)').text).to eq("Dr. Toast $6.67 $0.00 $0.00 -$6.67")
-    expect(find('table.balances tr:nth-child(3)').text).to eq("Shipwrek $8.33 $0.00 $0.00 -$8.33")
+    expect(find('table.balances tr:nth-child(1)').text).to eq("account opening debits credits current closing")
+    expect(find('table.balances tr:nth-child(2)').text).to eq("Dr. Toast $6.67 $0.00 $0.00 $6.67")
+    expect(find('table.balances tr:nth-child(3)').text).to eq("Shipwrek $8.33 $0.00 $0.00 $8.33")
     expect(find('table.balances tr:nth-child(4)').text).to eq("False Profit $0.00 $0.00 $0.00 $0.00")
   end
 

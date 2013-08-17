@@ -5,17 +5,17 @@ class Balance
 
   def calculate(period)
     @results = {}
-    transactions = transaction_amounts(period)
+    debits = period_debits(period)
     @accounts.each do |account|
-      total_payments      = payments(period, account)
-      transaction_shares  = transactions[account] || 0
+      total_credits      = credits(period, account)
+      total_debits  = debits[account] || 0
       opening_balance = period.opening_balances[account.id.to_s] || 0
       closing_balance = period.closing_balances[account.id.to_s] || 0
       @results[account] = {
         opening: opening_balance,
-        shares: transaction_shares,
-        payments: total_payments,
-        balance: opening_balance - transaction_shares + total_payments,
+        debits: total_debits,
+        credits: total_credits,
+        balance: opening_balance - total_debits + total_credits,
         closing: closing_balance
       }
     end
@@ -28,16 +28,16 @@ class Balance
 
   private
 
-  def payments(period, account)
+  def credits(period, account)
     account.transactions.where(period_id: period.id).sum(:amount)
   end
 
-  def transaction_amounts(period)
+  def period_debits(period)
     result = {}
     period.transactions.each do |transaction|
       @accounts.each do |account|
         result[account] ||= 0
-        result[account] += transaction.amount_for_account(account)
+        result[account] += transaction.debit_for_account(account)
       end
     end
     result

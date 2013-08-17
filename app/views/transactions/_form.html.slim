@@ -5,15 +5,16 @@
       = f.collection_select :account_id, @accounts.order('kind DESC, name ASC'), :id, :name, prompt: true
 
   .control-group
-    label.control-label Description
-    .controls
-      = f.text_field :description
-
-  .control-group
     label.control-label Amount
     .controls
       input.input-small name="transaction_amount_dollars" type="text"
       = f.hidden_field :amount
+
+  .control-group
+    label.control-label Description
+    .controls
+      = f.text_field :description
+
 
   hr
 

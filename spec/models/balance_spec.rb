@@ -107,8 +107,8 @@ describe Balance do
         shares: { p1.id => 1, p2.id => 1 }
       }
       transaction = Transaction.create!(attrs).reload
-      expect(transaction.amount_for_account(p1)).to eq(167)
-      expect(transaction.amount_for_account(p2)).to eq(167)
+      expect(transaction.debit_for_account(p1)).to eq(167)
+      expect(transaction.debit_for_account(p2)).to eq(167)
       expect(account_balance(p1, period1)).to eq(166)
       expect(account_balance(p2, period1)).to eq(-167)
       expect(account_balance(fp, period1)).to eq(0)
