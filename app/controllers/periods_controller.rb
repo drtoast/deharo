@@ -2,6 +2,22 @@ class PeriodsController < ApplicationController
   def show
     @period = Period.find params[:id]
     @summary = Balance.new(accounts).calculate(@period)
+
+    @totals = {
+      opening: 0,
+      debits: 0,
+      credits: 0,
+      current: 0,
+      closing: 0
+    }
+
+    @summary.each do |account, balances|
+      @totals[:opening] += balances[:opening].to_i
+      @totals[:debits] -= balances[:debits].to_i
+      @totals[:credits] += balances[:credits].to_i
+      @totals[:current] += balances[:balance].to_i
+      @totals[:closing] += balances[:closing].to_i
+    end
   end
 
   def current
