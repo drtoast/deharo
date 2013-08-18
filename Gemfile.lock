@@ -5,6 +5,14 @@ GIT
     jasminerice (0.1.0)
       coffee-rails
 
+GIT
+  remote: git://github.com/metaskills/less-rails-bootstrap.git
+  revision: f24dab1feaf98272b542e69b89bcfbe44b5445f9
+  branch: 3.0.0-rc1
+  specs:
+    less-rails-bootstrap (3.0.0.rc1)
+      less-rails (~> 2.3.1)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -127,8 +135,6 @@ GEM
     less-rails (2.3.3)
       actionpack (>= 3.1)
       less (~> 2.3.1)
-    less-rails-bootstrap (2.3.3)
-      less-rails (~> 2.3.1)
     libv8 (3.11.8.17)
     listen (1.2.2)
       rb-fsevent (>= 0.9.3)
@@ -273,7 +279,7 @@ DEPENDENCIES
   jquery-rails
   launchy
   less-rails
-  less-rails-bootstrap
+  less-rails-bootstrap (= 3.0.0.rc1)!
   pg
   poltergeist
   pry
