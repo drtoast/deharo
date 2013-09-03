@@ -19,4 +19,4 @@ table.table.table-striped
         '
         span.muted= "(#{transaction.account_shares(@account)}/#{transaction.total_shares})"
       td= link_to cents_to_currency(transaction.amount), edit_period_transaction_path(transaction.period, transaction)
-      td= transaction.created_at
+      td= transaction.created_at.in_time_zone
