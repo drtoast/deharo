@@ -33,7 +33,7 @@ table.table.table-striped.balances
     td class=currency_class(@totals[:current])
       = cents_to_currency @totals[:current]
     td class=currency_class(@totals[:closing])
-      = cents_to_currency @totals[:closing]
+      = cents_to_currency(@totals[:closing]) if @period.closed?
 
 - unless @period.closed?
   = button_to "Close Period", { action: "close", id: @period.id }, method: :put, class: 'btn btn-primary', data: { confirm: "Finalize and close this period?" }

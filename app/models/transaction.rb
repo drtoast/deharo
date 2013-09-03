@@ -16,7 +16,7 @@ class Transaction < ActiveRecord::Base
   end
 
   def account_shares(account)
-    shares[account.id.to_s] || 0
+    shares[account.id.to_s].to_i
   end
 
   def debit_for_account(account)
