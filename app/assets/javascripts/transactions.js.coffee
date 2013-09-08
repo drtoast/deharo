@@ -1,5 +1,5 @@
 onLoad = ->
-  if $('form#new_transaction').length > 0
+  if $('#transactions form').length > 0
     $amount_dollars = $('input[name=transaction_amount_dollars]')
     $amount_cents = $('input#transaction_amount')
     $all_shares = $('input.share')
