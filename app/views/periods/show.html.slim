@@ -11,19 +11,29 @@ table.table.table-striped.balances
 
   - @summary.each do |account, balances|
     tr
-      td= account.name
-      td= cents_to_currency(balances[:opening])
-      td= cents_to_currency(0 - balances[:debits])
-      td= cents_to_currency(balances[:credits])
-      td= link_to cents_to_currency(balances[:balance]), period_account_transactions_path(@period, account)
-      td= @period.closed? ? cents_to_currency(balances[:closing]) : ''
+      td= link_to account.name, period_account_transactions_path(@period, account)
+      td class=currency_class(balances[:opening])
+        = cents_to_currency(balances[:opening])
+      td class=currency_class(0 - balances[:debits])
+        = cents_to_currency(0 - balances[:debits])
+      td class=currency_class(balances[:credits])
+        = cents_to_currency(balances[:credits])
+      td class=currency_class(balances[:balance])
+        = cents_to_currency(balances[:balance])
+      td class=currency_class(balances[:closing])
+        = @period.closed? ? cents_to_currency(balances[:closing]) : ''
   tr
     td TOTALS
-    td= cents_to_currency @totals[:opening]
-    td= cents_to_currency @totals[:debits]
-    td= cents_to_currency @totals[:credits]
-    td= cents_to_currency @totals[:current]
-    td= cents_to_currency @totals[:closing]
+    td class=currency_class(@totals[:opening])
+      = cents_to_currency @totals[:opening]
+    td class=currency_class(@totals[:debits])
+      = cents_to_currency @totals[:debits]
+    td class=currency_class(@totals[:credits])
+      = cents_to_currency @totals[:credits]
+    td class=currency_class(@totals[:current])
+      = cents_to_currency @totals[:current]
+    td class=currency_class(@totals[:closing])
+      = cents_to_currency(@totals[:closing]) if @period.closed?
 
 - unless @period.closed?
   = button_to "Close Period", { action: "close", id: @period.id }, method: :put, class: 'btn btn-primary', data: { confirm: "Finalize and close this period?" }
@@ -43,5 +53,5 @@ table.table.table-striped.transactions
       td= link_to transaction.account.name, period_account_transactions_path(@period, transaction.account)
       td= transaction.description
       td= link_to cents_to_currency(transaction.amount), edit_period_transaction_path(@period, transaction)
-      td= transaction.created_at.localtime
+      td= transaction.created_at.in_time_zone
       td= transaction.id

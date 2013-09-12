@@ -40,9 +40,9 @@ feature "Periods" do
 
     visit "/"
 
-    expect(find('table.balances tr:nth-child(1)').text).to eq("account opening debits credits oweage closing")
-    expect(find('table.balances tr:nth-child(2)').text).to eq("Dr. Toast $5.00 -$20.00 $20.00 -$5.00")
-    expect(find('table.balances tr:nth-child(3)').text).to eq("Shipwrek $10.00 -$25.00 $25.00 -$10.00")
+    expect(find('table.balances tr:nth-child(1)').text).to eq("account opening debits credits current closing")
+    expect(find('table.balances tr:nth-child(2)').text).to eq("Dr. Toast $5.00 -$20.00 $20.00 $5.00")
+    expect(find('table.balances tr:nth-child(3)').text).to eq("Shipwrek $10.00 -$25.00 $25.00 $10.00")
     expect(find('table.balances tr:nth-child(4)').text).to eq("False Profit $0.00 $0.00 $0.00 $0.00")
   end
 

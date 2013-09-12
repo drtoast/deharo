@@ -53,3 +53,7 @@ group :development do
   gem 'rb-fsevent'
   gem 'growl'
 end
+
+group :production do
+  gem 'rails_12factor'
+end

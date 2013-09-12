@@ -15,10 +15,13 @@ class Transaction < ActiveRecord::Base
     shares.values.map{|s| s.to_i}.sum.to_i
   end
 
+  def account_shares(account)
+    shares[account.id.to_s].to_i
+  end
+
   def debit_for_account(account)
-    account_shares = shares[account.id.to_s] || 0
     if total_shares > 0
-      (amount * (account_shares.to_f / total_shares.to_f)).round
+      (amount * (account_shares(account).to_f / total_shares.to_f)).round
     else
       0
     end

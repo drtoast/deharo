@@ -27,4 +27,8 @@ module ApplicationHelper
   def account_name(account_id)
     Account.find(account_id).name
   end
+
+  def currency_class(amount)
+    amount.to_i < 0 ? 'text-warning' : ''
+  end
 end
