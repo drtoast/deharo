@@ -1,42 +1,44 @@
 = form_for [@period, @transaction], html: { class: 'form-horizontal' } do |f|
-  .control-group
-    label.control-label Purchaser
-    .controls
-      = f.collection_select :account_id, @accounts.order('kind DESC, name ASC'), :id, :name, prompt: true
+  .form-group
+    label.col-sm-2.control-label Purchaser
+    .col-sm-4
+      = f.collection_select :account_id, @accounts.order('kind DESC, name ASC'), :id, :name, { prompt: true }, {class: 'form-control' }
 
-  .control-group
-    label.control-label Amount
-    .controls
-      input.input-small name="transaction_amount_dollars" type="text"
+  .form-group
+    label.col-sm-2.control-label Amount
+    .col-sm-4
+      input.form-control name="transaction_amount_dollars" type="text"
       = f.hidden_field :amount
 
-  .control-group
-    label.control-label Description
-    .controls
-      = f.text_field :description
-
+  .form-group
+    label.col-sm-2.control-label Description
+    .col-sm-4
+      = f.text_field :description, class: 'form-control'
 
   hr
 
-    .control-group
-      label.control-label Shares
-      .controls
-        span.btn.shares.equalize Make Equal
-        span.btn.shares.pay-rent Pay Rent
+  .form-group
+    label.col-sm-2.control-label Shares
+    .col-sm-4
+      a.btn.btn-default.shares.equalize href='#' Make Equal
+      a.btn.btn-default.shares.pay-rent href='#' Pay Rent
 
   - @accounts.order('kind DESC, name ASC').each do |account|
-    .control-group
-      label.control-label= account.name
-      .controls
-        input.input-small.share name="transaction[shares][#{account.id}]" value="#{@transaction.shares[account.id.to_s]}" type="text" data-account-id="#{account.id}" data-account-kind="#{account.kind}"
+    .form-group
+      label.col-sm-2.control-label= account.name
+      .col-sm-4
+        input.form-control.share name="transaction[shares][#{account.id}]" value="#{@transaction.shares[account.id.to_s]}" type="text" data-account-id="#{account.id}" data-account-kind="#{account.kind}"
         span.share-dollars data-account-id="#{account.id}"
 
-  .control-group
-    .controls
-      = f.submit class: 'btn btn-primary'
+  .form-group
+    .col-sm-2
+    .col-sm-4
+      = f.submit class: 'btn btn-primary btn-block'
 
 - unless @transaction.new_record?
+
   .form-horizontal
-    .control-group
-      .controls
-        = button_to "Delete Transaction", @transaction, method: :delete, class: 'btn btn-danger', data: {confirm: "Delete transaction?"}
+    .form-group
+      .col-sm-2
+      .col-sm-4
+        = button_to "Delete Transaction", @transaction, method: :delete, class: 'btn btn-danger btn-block', data: {confirm: "Delete transaction?"}

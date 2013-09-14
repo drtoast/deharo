@@ -1,20 +1,21 @@
 = form_for @account, html: { class: 'form-horizontal' } do |f|
-  .control-group
-    label.control-label for="account_name" Name
-    .controls
-      = f.text_field :name
+  .form-group
+    label.col-sm-2.control-label for="account_name" Name
+    .col-sm-4
+      = f.text_field :name, class: 'form-control'
 
   - unless @account.new_record?
-    .control-group
-      label.control-label Active
-      .controls
-        = f.select :active, [:true, :false]
+    .form-group
+      label.col-sm-2.control-label Active
+      .col-sm-4
+        = f.select :active, [:true, :false], class: 'form-control'
 
-    .control-group
-      label.control-label Kind
-      .controls
-        = f.select :kind, [:personal, :corporate]
+    .form-group
+      label.col-sm-2.control-label Kind
+      .col-sm-4
+        = f.select :kind, [:personal, :corporate], class: 'form-control'
 
-  .control-group
-    .controls
-      = f.submit class: 'btn btn-primary'
+  .form-group
+    .col-sm-2
+    .col-sm-4
+      = f.submit class: 'btn btn-primary btn-block'

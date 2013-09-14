@@ -19,7 +19,7 @@ table.table.table-striped.balances
       td class=currency_class(balances[:credits])
         = cents_to_currency(balances[:credits])
       td class=currency_class(balances[:balance])
-        = cents_to_currency(balances[:balance])
+        = link_to_account_balance_transaction(account, balances[:balance])
       td class=currency_class(balances[:closing])
         = @period.closed? ? cents_to_currency(balances[:closing]) : ''
   tr
@@ -37,7 +37,7 @@ table.table.table-striped.balances
 
 - unless @period.closed?
   = button_to "Close Period", { action: "close", id: @period.id }, method: :put, class: 'btn btn-primary', data: { confirm: "Finalize and close this period?" }
-
+br
 h4 Transactions
 
 table.table.table-striped.transactions

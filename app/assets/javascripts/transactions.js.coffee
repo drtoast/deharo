@@ -42,10 +42,12 @@ onLoad = ->
 
         $(".share-dollars[data-account-id=#{account_id}]").text("$#{share_dollars}")
 
-    equalizeShares = =>
+    equalizeShares = (e) =>
+      e.preventDefault()
       setShares(1, 0)
 
-    payRent = =>
+    payRent = (e) =>
+      e.preventDefault()
       setShares(0, 1)
 
     setShares = (personal, corporate) =>

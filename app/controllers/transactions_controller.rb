@@ -1,7 +1,7 @@
 class TransactionsController < ApplicationController
   def new
     accounts
-    @transaction = Transaction.new shares: {}
+    @transaction = Transaction.new new_transaction_params
   end
 
   def create
@@ -69,6 +69,16 @@ class TransactionsController < ApplicationController
   def transaction_params
     p = params.require(:transaction).permit(:amount, :description, :account_id)
     p[:shares] = params[:transaction][:shares]
+    p
+  end
+
+  def new_transaction_params
+    p = { shares: {} }
+
+    p[:description] = params[:description] if params[:description]
+    p[:amount] = params[:amount].to_i if params[:amount]
+    p[:account_id] = params[:account_id] if params[:account_id]
+    p[:shares][params[:share_id]] = 1 if params[:share_id]
     p
   end
 end

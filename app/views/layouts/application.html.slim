@@ -5,10 +5,11 @@ html
     = stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true
     = javascript_include_tag 'application', 'data-turbolinks-track' => true
     = csrf_meta_tag
+    meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
 
   body id=(controller.controller_name) class=(controller.action_name)
     .wrapper
-      nav.navbar.navbar-fixed-top role='navigation'
+      nav.navbar.navbar-default.navbar-fixed-top role='navigation'
         .navbar-header
           button.button.navbar-toggle data-toggle='collapse' data-target='.navbar-collapse'
             span.icon-bar
@@ -23,10 +24,9 @@ html
             li= link_to 'accounts', accounts_path
             li= link_to 'help', "/help"
 
-      - flash.each do |name, msg|
-        = content_tag :div, raw(msg), class: "alert #{alert_class(name)}"
-
       .container
+        - flash.each do |name, msg|
+          = content_tag :div, raw(msg), class: "alert #{alert_class(name)}"
         = yield
         .push
       footer

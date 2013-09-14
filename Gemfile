@@ -10,7 +10,7 @@ gem 'pg'
 
 gem 'slim-rails'
 gem 'less-rails'
-gem 'less-rails-bootstrap', '3.0.0.rc1', github: 'metaskills/less-rails-bootstrap', branch: '3.0.0-rc1'
+gem 'less-rails-bootstrap', '3.0.3'
 gem 'jquery-rails'
 gem 'coffee-rails'
 gem 'turbolinks'
