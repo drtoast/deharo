@@ -16,10 +16,20 @@ onLoad = ->
         total += val if val
       total
 
-    updateAmountCents = ->
-      dollars = $amount_dollars.val().replace(/[$,]/g, '')
+    formatDollars = (dollars) ->
+      # add at least two decimal places
+      dollars = dollars.toString().replace(/[^\d\.]/g, '')
+      dollars += '.' unless dollars.match(/\./)
+      dollars += '00'
 
-      # workaround for floating point errors
+      # truncate to two decimal places
+      idx = dollars.indexOf('.')
+      dollars.substr(0, idx + 3)
+
+    updateAmountCents = ->
+      dollars = formatDollars($amount_dollars.val())
+
+      # very ugly workaround for floating point errors.
       if dollars.indexOf('.') != -1
         cents = dollars.replace(/\./, '')
       else
@@ -28,7 +38,8 @@ onLoad = ->
       $amount_cents.val(cents)
 
     updateAmountDollars = ->
-      $amount_dollars.val($amount_cents.val() / 100.0)
+      dollars = formatDollars($amount_cents.val() / 100.0)
+      $amount_dollars.val(dollars)
 
     updateShareDollars = ->
       for share in $all_shares
@@ -39,6 +50,7 @@ onLoad = ->
           share_dollars = Math.round($amount_cents.val() * (share_amount / getTotalShares())) / 100
         else
           share_dollars = 0
+        share_dollars = formatDollars(share_dollars)
 
         $(".share-dollars[data-account-id=#{account_id}]").text("$#{share_dollars}")
 
