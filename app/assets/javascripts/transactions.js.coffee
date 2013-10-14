@@ -52,7 +52,9 @@ onLoad = ->
           share_dollars = 0
         share_dollars = formatDollars(share_dollars)
 
-        $(".share-dollars[data-account-id=#{account_id}]").text("$#{share_dollars}")
+        el = $(".share-dollars[data-account-id=#{account_id}]")
+        el.text("$#{share_dollars}")
+        el.toggleClass('text-warning', share_dollars != '0.00')
 
     equalizeShares = (e) =>
       e.preventDefault()
