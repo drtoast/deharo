@@ -28,6 +28,10 @@ class Transaction < ActiveRecord::Base
     end
   end
 
+  def relevant_to?(account)
+    (account.id == account_id) || (debit_for_account(account) > 0)
+  end
+
   private
 
   def set_defaults

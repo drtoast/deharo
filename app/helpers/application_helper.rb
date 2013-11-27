@@ -45,4 +45,8 @@ module ApplicationHelper
       cents_to_currency(balance)
     end
   end
+
+  def relevant_transaction(transaction, account)
+    debit = transaction.debit_for_account(@account).to_i
+  end
 end
