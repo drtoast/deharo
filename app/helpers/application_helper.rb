@@ -45,5 +45,4 @@ module ApplicationHelper
       cents_to_currency(balance)
     end
   end
-
 end

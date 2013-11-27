@@ -1,7 +1,12 @@
 class TransactionsController < ApplicationController
   def new
     accounts
-    @transaction = Transaction.new new_transaction_params
+    if params[:transaction_id]
+      old = Transaction.find params[:transaction_id]
+      @transaction = Transaction.new(old.attributes.tap {|a| a.delete :id})
+    else
+      @transaction = Transaction.new new_transaction_params
+    end
   end
 
   def create

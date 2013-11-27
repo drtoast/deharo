@@ -36,9 +36,17 @@
       = f.submit class: 'btn btn-primary btn-block'
 
 - unless @transaction.new_record?
-
   .form-horizontal
     .form-group
       .col-sm-2
       .col-sm-4
         = button_to "Delete Transaction", @transaction, method: :delete, class: 'btn btn-danger btn-block', data: {confirm: "Delete transaction?"}
+
+  .form-horizontal
+    .form-group
+      .col-sm-2
+      .col-sm-4
+        - if @transaction.transaction_preset
+          = button_to "Remove From Presets", transaction_transaction_preset_path(@transaction), method: :delete, class: 'btn btn-default btn-block', data: {confirm: "Remove this from the list of presets?"}
+        - else
+          = button_to "Add To Presets", transaction_transaction_preset_path(@transaction), method: :post, class: 'btn btn-default btn-block', data: {confirm: "Add this to the list of presets?"}

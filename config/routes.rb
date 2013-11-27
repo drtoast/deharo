@@ -19,5 +19,9 @@ Deharo::Application.routes.draw do
   end
 
   resources :accounts, only: [:index, :update, :create, :edit]
-  resources :transactions, only: [:new, :create, :destroy]
+  resources :transactions, only: [:new, :create, :destroy] do
+    resource :transaction_preset, only: [:create, :destroy]
+  end
+
+  resources :transaction_presets, only: [:index]
 end

@@ -1,0 +1,12 @@
+div.page-header
+  h1 Presets
+
+table.table.table-striped
+  tbody
+  - @transaction_presets.each do |transaction_preset|
+    tr
+      td= link_to transaction_preset.transaction.description, new_transaction_path(transaction_id: transaction_preset.transaction.id)
+      td
+        = link_to "Edit", edit_period_transaction_path(transaction_preset.transaction.period, transaction_preset.transaction), class: 'btn btn-default'
+        '
+        = link_to "Delete", transaction_transaction_preset_path(transaction_preset.transaction), method: :delete, class: 'btn btn-danger', confirm: 'Remove this preset?'

@@ -1,6 +1,7 @@
 class Transaction < ActiveRecord::Base
   belongs_to :account
   belongs_to :period
+  has_one :transaction_preset, dependent: :destroy
 
   before_create :set_defaults
 
