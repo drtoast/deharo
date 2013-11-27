@@ -11,13 +11,15 @@ h2 Period #{@period.id} Transactions for #{@account.name}
       th created
 
     - @transactions.each do |transaction|
-      tr
-        td= transaction.id
-        td= link_to transaction.account.name, period_account_transactions_path(transaction.period, transaction.account)
-        td= transaction.description
-        td
-          span= cents_to_currency(transaction.debit_for_account(@account))
-          '
-          span.muted= "(#{transaction.account_shares(@account)}/#{transaction.total_shares})"
-        td= link_to cents_to_currency(transaction.amount), edit_period_transaction_path(transaction.period, transaction)
-        td= transaction.created_at.in_time_zone
+      - debit = transaction.debit_for_account(@account).to_i
+      - if debit > 0
+        tr
+          td= transaction.id
+          td= link_to transaction.account.name, period_account_transactions_path(transaction.period, transaction.account)
+          td= transaction.description
+          td
+            span= cents_to_currency(debit)
+            '
+            span.muted= "(#{transaction.account_shares(@account)}/#{transaction.total_shares})"
+          td= link_to cents_to_currency(transaction.amount), edit_period_transaction_path(transaction.period, transaction)
+          td= transaction.created_at.in_time_zone
