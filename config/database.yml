@@ -8,6 +8,7 @@ development: &default
   username: postgres
   pool: 5
   timeout: 5000
+  host: localhost
 
 test:
   <<: *default
