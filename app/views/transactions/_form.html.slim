@@ -15,6 +15,12 @@
     .col-sm-4
       = f.text_field :description, class: 'form-control'
 
+  - if @transaction.persisted?
+    .form-group
+      label.col-sm-2.control-label Created
+      .col-sm-4
+        span.form-control= @transaction.created_at.in_time_zone
+
   hr
 
   .form-group
