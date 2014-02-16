@@ -10,11 +10,11 @@ gem 'pg'
 
 gem 'slim-rails'
 gem 'less-rails'
-gem 'less-rails-bootstrap', '3.0.3'
+gem 'less-rails-bootstrap'
 gem 'jquery-rails'
 gem 'coffee-rails'
 gem 'turbolinks'
-gem 'simple_form', '~> 3.0.0.rc'
+gem 'simple_form'
 gem 'uglifier'
 
 gem 'awesome_print'
