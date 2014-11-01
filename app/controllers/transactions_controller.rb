@@ -30,10 +30,12 @@ class TransactionsController < ApplicationController
         redirect_to period_path(current_period)
       else
         flash[:error] = "Can't update transaction: #{@transaction.errors.full_messages.to_sentence}"
+        period
         render :edit
       end
     else
       flash[:error] = "Can't update transaction: period is closed"
+      period
       render :edit
     end
   end

@@ -8,6 +8,7 @@ class Transaction < ActiveRecord::Base
   # scope :expense, -> { where(kind: 'expense') }
   # scope :payment, -> { where(kind: 'payment') }
   validate :period_open
+  validate :has_shares
   validates :description, presence: true, length: { minimum: 1 }
   validates :amount, numericality: { only_integer: true }
   validates :account_id, presence: true
@@ -40,5 +41,12 @@ class Transaction < ActiveRecord::Base
 
   def period_open
     period.open?
+  end
+
+  def has_shares
+    unless shares.values.map(&:to_i).sum >= 1
+      errors.add(:base, "Must specify at least 1 share")
+    end
+    # unless shares.keys
   end
 end
