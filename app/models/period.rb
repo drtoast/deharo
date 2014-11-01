@@ -36,7 +36,8 @@ class Period < ActiveRecord::Base
   def get_closing_balances(accounts)
     closing = {}
     balance = Balance.new(accounts)
-    balance.calculate(self).each do |account, summary|
+    balance.calculate(self)
+    balance.results.each do |account, summary|
       closing[account.id.to_s] = summary[:balance]
     end
     closing

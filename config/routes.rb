@@ -11,6 +11,7 @@ Deharo::Application.routes.draw do
 
     member do
       put :close
+      get :detail
     end
 
     collection do
