@@ -2,7 +2,7 @@ class PeriodsController < ApplicationController
   def show
     @period = Period.find params[:id]
 
-    @balance = Balance.new(accounts)
+    @balance = Balance.new(Account.all)
     @balance.calculate(@period)
     @totals = @balance.totals
     @summary = @balance.results
@@ -25,7 +25,7 @@ class PeriodsController < ApplicationController
 
   def close
     @period = Period.find params[:id]
-    if @period.close!(accounts)
+    if @period.close!(Account.all)
       flash[:notice] = "Period #{@period.id} closed, opening period #{@period.id + 1}"
       redirect_to period_path(current_period)
     else
