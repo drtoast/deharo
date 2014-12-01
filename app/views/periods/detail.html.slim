@@ -11,7 +11,7 @@ table.table.table-striped.transactions
     th c.credits
     th c.current
 
-  - @period.transactions.order('created_at').each do |transaction|
+  - @period.transactions.order('id').each do |transaction|
     - @balance.calculate(@period, transaction.id)
     tr
       td= link_to transaction.account.name, period_account_transactions_path(@period, transaction.account)
