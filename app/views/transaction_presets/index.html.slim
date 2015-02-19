@@ -2,11 +2,18 @@ div.page-header
   h1 Presets
 
 table.table.table-striped
+  thead
+    tr
+      th purchaser
+      th description
+      th amount
   tbody
   - @transaction_presets.each do |transaction_preset|
     tr
-      td= link_to transaction_preset.transaction.description, new_transaction_path(transaction_id: transaction_preset.transaction.id)
+      td= transaction_preset.transaction.account.name
+      td= transaction_preset.transaction.description
+      td= cents_to_currency(transaction_preset.transaction.amount)
       td
-        = link_to "Edit", edit_period_transaction_path(transaction_preset.transaction.period, transaction_preset.transaction), class: 'btn btn-default'
+        = link_to "Copy", new_transaction_path(transaction_id: transaction_preset.transaction.id), class: 'btn btn-primary btn-xs'
         '
-        = link_to "Delete", transaction_transaction_preset_path(transaction_preset.transaction), method: :delete, class: 'btn btn-danger', confirm: 'Remove this preset?'
+        = link_to "Delete", transaction_transaction_preset_path(transaction_preset.transaction), method: :delete, class: 'btn btn-danger btn-xs', confirm: 'Remove this preset?'

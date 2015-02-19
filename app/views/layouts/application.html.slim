@@ -1,7 +1,7 @@
 doctype 5
 html
   head
-    title De Haro
+    title = ENV['DE_HARO_TITLE'] || 'De Haro'
     = stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true
     = javascript_include_tag 'application', 'data-turbolinks-track' => true
     = csrf_meta_tag
@@ -15,7 +15,7 @@ html
             span.icon-bar
             span.icon-bar
             span.icon-bar
-          a.navbar-brand href='/' De Haro
+          a.navbar-brand href='/' = ENV['DE_HARO_TITLE'] || 'De Haro'
         .collapse.navbar-collapse
           ul.nav.navbar-nav
             li= link_to 'current', current_periods_path
