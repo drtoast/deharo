@@ -10,10 +10,10 @@ table.table.table-striped
   tbody
   - @transaction_presets.each do |transaction_preset|
     tr
-      td= transaction_preset.transaction.account.name
-      td= transaction_preset.transaction.description
-      td= cents_to_currency(transaction_preset.transaction.amount)
+      td= transaction_preset.base_transaction.account.name
+      td= transaction_preset.base_transaction.description
+      td= cents_to_currency(transaction_preset.base_transaction.amount)
       td
-        = link_to "Copy", new_transaction_path(transaction_id: transaction_preset.transaction.id), class: 'btn btn-primary btn-xs'
+        = link_to "Copy", new_transaction_path(transaction_id: transaction_preset.base_transaction.id), class: 'btn btn-primary btn-xs'
         '
-        = link_to "Delete", transaction_transaction_preset_path(transaction_preset.transaction), method: :delete, class: 'btn btn-danger btn-xs', confirm: 'Remove this preset?'
+        = link_to "Delete", transaction_transaction_preset_path(transaction_preset.base_transaction), method: :delete, class: 'btn btn-danger btn-xs', confirm: 'Remove this preset?'

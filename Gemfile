@@ -1,16 +1,16 @@
 source 'https://rubygems.org'
 
 # Heroku uses the ruby version to configure your application's runtime.
-ruby '2.0.0'
+ruby '2.1.5'
 
 gem 'unicorn'
 gem 'rack-canonical-host'
-gem 'rails', '~> 4.0.0'
+gem 'rails', '~> 4.2.0'
 gem 'pg'
 
 gem 'slim-rails'
-gem 'less-rails'
-gem 'less-rails-bootstrap'
+gem 'bootstrap-sass', '~> 3.3.3'
+gem 'sass-rails', '>= 3.2'
 gem 'jquery-rails'
 gem 'coffee-rails'
 gem 'turbolinks'
@@ -25,7 +25,7 @@ gem 'therubyracer', platforms: :ruby
 
 group :test, :development do
   gem 'pry'
-  gem 'pry-debugger'
+  gem 'pry-byebug'
   gem 'rspec-rails'
   gem 'capybara'
   #gem 'capybara-email'

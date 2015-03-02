@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe TransactionPresetsController do
+describe TransactionPresetsController, type: :controller do
 
   let(:period) { Period.create! }
   let(:p1) { Account.create!(name: 'Person 1') }
