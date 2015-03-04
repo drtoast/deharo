@@ -1,0 +1,23 @@
+{
+  "name": "deharo",
+  "version": "0.0.0",
+  "homepage": "https://github.com/drtoast/deharo",
+  "authors": [
+    "James Reynolds <toast@drtoast.com>"
+  ],
+  "description": "shared household financial manager",
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "vendor/assets/components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "react": "",
+    "flux": "2.0.2"
+  }
+}

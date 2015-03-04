@@ -12,6 +12,14 @@
 //
 //= require jquery
 //= require jquery_ujs
-//= require turbolinks
 //= require bootstrap
+//= require react
+//= require react_ujs
+//= require flux
+//= require app_constants
+//= require app_dispatcher
+//= require_tree ./utils
+//= require_tree ./views
+//= require_tree ./stores
+//= require_tree ./actions
 //= require_tree .

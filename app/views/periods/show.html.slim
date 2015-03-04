@@ -1,3 +1,7 @@
+/ = react_component('Period', render(template: 'periods/_period.json.jbuilder', locals: { period: @period }))
+
+div data-react-class="Period" data-react-props=render(template: 'periods/_period.json.jbuilder', locals: { period: @period })
+
 h4 Balances
 
 table.table.table-striped.balances

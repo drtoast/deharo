@@ -7,7 +7,7 @@ GIT
 
 GIT
   remote: git://github.com/reactjs/react-rails.git
-  revision: ac4320eb183b948ec328a695cd54d27c769073af
+  revision: f9490997b659512ef0d2d4034c0215bb95147288
   specs:
     react-rails (1.0.0.pre)
       coffee-script-source (~> 1.9)
@@ -159,6 +159,9 @@ GEM
       rack (>= 1.2.1)
       rake
     jasmine-core (2.2.0)
+    jbuilder (2.2.8)
+      activesupport (>= 3.0.0, < 5)
+      multi_json (~> 1.2)
     jquery-rails (4.0.3)
       rails-dom-testing (~> 1.0)
       railties (>= 4.2.0)
@@ -347,6 +350,7 @@ DEPENDENCIES
   guard-livereload
   guard-rspec
   jasminerice!
+  jbuilder
   jquery-rails
   launchy
   pg

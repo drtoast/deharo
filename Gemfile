@@ -16,8 +16,9 @@ gem 'coffee-rails'
 gem 'turbolinks'
 gem 'simple_form'
 gem 'uglifier'
-
 gem 'awesome_print'
+gem 'react-rails', '~> 1.0.0.pre', github: 'reactjs/react-rails'
+gem 'jbuilder'
 
 # Heroku suggests that these gems aren't necessary, but they're required to compile less assets on deploy.
 gem 'therubyracer', platforms: :ruby
