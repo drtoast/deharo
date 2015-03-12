@@ -18,7 +18,7 @@ onLoad = ->
 
     formatDollars = (dollars) ->
       # add at least two decimal places
-      dollars = dollars.toString().replace(/[^\d\.]/g, '')
+      dollars = dollars.toString().replace(/[^\-\d\.]/g, '')
       dollars += '.' unless dollars.match(/\./)
       dollars += '00'
 
