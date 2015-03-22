@@ -17,7 +17,15 @@ class PeriodsController < ApplicationController
   end
 
   def index
-    @periods = Period.all.order('created_at DESC')
+    respond_to do |f|
+      f.html { @periods = Period.all.order('created_at DESC') }
+      f.csv do
+        periods = Period.all.order(:created_at)
+        @csv = CsvExport.new(periods)
+        headers['Content-Disposition'] = "attachment; filename=\"deharo.csv\""
+        headers['Content-Type'] ||= 'text/csv'
+      end
+    end
   end
 
   def update

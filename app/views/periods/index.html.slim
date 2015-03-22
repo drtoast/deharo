@@ -11,3 +11,5 @@ table.table.table-striped
       td= link_to period.status, period_path(period.id)
       td= period.opened_at.localtime
       td= period.closed_at.try(:localtime)
+
+p= link_to 'Export', periods_path(format: 'csv'), class: 'btn btn-default'
