@@ -21,8 +21,8 @@ class PeriodsController < ApplicationController
       f.html { @periods = Period.all.order('created_at DESC') }
       f.csv do
         periods = Period.all.order(:created_at)
-        @csv = CsvExport.new(periods)
-        headers['Content-Disposition'] = "attachment; filename=\"deharo.csv\""
+        @csv = CsvExport::Periods.new(periods)
+        headers['Content-Disposition'] = "attachment; filename=\"deharo-periods.csv\""
         headers['Content-Type'] ||= 'text/csv'
       end
     end

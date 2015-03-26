@@ -1,6 +1,6 @@
 require 'csv'
 
-class CsvExport
+class CsvExport::Transactions
   def initialize(periods)
     @periods = periods
   end

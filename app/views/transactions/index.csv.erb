@@ -1,0 +1,4 @@
+<%= CSV.generate_line @csv.header -%>
+<%- @csv.rows do |column| -%>
+<%= CSV.generate_line(column).html_safe -%>
+<%- end -%>

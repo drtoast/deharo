@@ -63,8 +63,20 @@ class TransactionsController < ApplicationController
   end
 
   def index
-    @account = Account.find(params[:account_id]) if params[:account_id]
-    @transactions = period.transactions.order('created_at DESC')
+    respond_to do |f|
+      f.html do
+        @account = Account.find(params[:account_id]) if params[:account_id]
+        @transactions = period.transactions.order('created_at DESC')
+      end
+
+      f.csv do
+        periods = Period.all.order(:created_at)
+        @csv = CsvExport::Transactions.new(periods)
+        headers['Content-Disposition'] = "attachment; filename=\"deharo-transactions.csv\""
+        headers['Content-Type'] ||= 'text/csv'
+      end
+    end
+
   end
 
   private
