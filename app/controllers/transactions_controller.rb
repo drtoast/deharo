@@ -13,8 +13,16 @@ class TransactionsController < ApplicationController
     accounts
     @transaction = current_period.transactions.build(transaction_params)
     if @transaction.save
-      flash[:notice] = "Transaction created"
-      redirect_to period_path(current_period)
+      respond_to do |format|
+        format.html do
+          flash[:notice] = "Transaction created"
+          redirect_to period_path(current_period)
+        end
+
+        format.json do
+          render json: @transaction.to_json
+        end
+      end
     else
       flash[:error] = "Can't create transaction: #{@transaction.errors.full_messages.to_sentence}"
       render :new
@@ -63,17 +71,22 @@ class TransactionsController < ApplicationController
   end
 
   def index
-    respond_to do |f|
-      f.html do
+    respond_to do |format|
+      format.html do
         @account = Account.find(params[:account_id]) if params[:account_id]
         @transactions = period.transactions.order('created_at DESC')
       end
 
-      f.csv do
+      format.csv do
         periods = Period.all.order(:created_at)
         @csv = CsvExport::Transactions.new(periods)
         headers['Content-Disposition'] = "attachment; filename=\"deharo-transactions.csv\""
         headers['Content-Type'] ||= 'text/csv'
+      end
+
+      format.json do
+        @transactions = period.transactions.order('created_at DESC')
+        render json: @transactions.to_json
       end
     end
 

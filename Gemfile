@@ -13,7 +13,7 @@ gem 'less-rails'
 gem 'less-rails-bootstrap'
 gem 'jquery-rails'
 gem 'coffee-rails'
-gem 'turbolinks'
+# gem 'turbolinks'
 gem 'simple_form'
 gem 'uglifier'
 
@@ -36,6 +36,7 @@ group :test, :development do
   gem 'jasminerice', github: 'bradphelan/jasminerice' # Latest release still depends on haml.
   #gem 'timecop'
   gem 'simplecov'
+  gem 'foreman'
   #gem 'cane'
   #gem 'morecane'
   #gem 'quiet_assets'

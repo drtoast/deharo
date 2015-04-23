@@ -31,8 +31,17 @@ class AccountsController < ApplicationController
   end
 
   def index
-    @account = Account.new
     @accounts = Account.order('name')
+
+    respond_to do |format|
+      format.html do
+        @account = Account.new
+      end
+
+      format.json do
+        render json: @accounts.to_json
+      end
+    end
   end
 
   private

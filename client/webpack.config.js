@@ -1,0 +1,57 @@
+// Run like this:
+// cd client && $(npm bin)/webpack -w --config webpack.rails.config.js
+// Note that Foreman (Procfile.dev) has also been configured to take care of this.
+
+// NOTE: All style sheets handled by the asset pipeline in rails
+
+'use strict';
+
+var path = require('path');
+
+var config = {
+
+  // the project dir
+  context: __dirname,
+  entry: ['./assets/javascripts/App'],
+  output: {
+    filename: 'client-bundle.js',
+    path: '../app/assets/javascripts/generated'
+  },
+
+  // load jQuery from the CDN or rails asset pipeline
+  // externals: {
+  //   jquery: 'var jQuery'
+  // },
+
+  resolve: {
+    root: [path.join(__dirname, 'scripts'),
+           path.join(__dirname, 'assets/javascripts'),
+           path.join(__dirname, 'assets/stylesheets')],
+    extensions: ['', '.webpack.js', '.web.js', '.js', '.jsx', '.scss', '.css', 'config.js']
+  },
+  module: {
+    loaders: []
+  }
+};
+
+// See webpack.common.config for adding modules common to both the webpack dev server and rails
+
+config.module.loaders.push(
+  {test: /\.jsx$/, exclude: /node_modules/, loader: 'babel-loader'},
+  {test: /\.js$/, exclude: /node_modules/, loader: 'babel-loader'},
+
+  // Next 2 lines expose jQuery and $ to any JavaScript files loaded after client-bundle.js
+  // in the Rails Asset Pipeline. Thus, load this one prior.
+  {test: require.resolve('jquery'), loader: 'expose?jQuery'},
+  {test: require.resolve('jquery'), loader: 'expose?$'}
+);
+module.exports = config;
+
+// Next line is Heroku specific. You'll have BUILDPACK_URL defined for your Heroku install.
+// var devBuild = (typeof process.env.BUILDPACK_URL) === 'undefined';
+// if (devBuild) {
+//   console.log('Webpack dev build for Rails');
+//   module.exports.devtool = 'eval-source-map';
+// } else {
+//   console.log('Webpack production build for Rails');
+// }
