@@ -2,6 +2,7 @@ Deharo::Application.routes.draw do
 
   root to: 'periods#current'
   get '/help', to: 'pages#root'
+  get '/app', to: 'pages#app'
 
   resources :periods, only: [:show, :index, :update] do
     resources :transactions, only: [:index, :edit, :update]

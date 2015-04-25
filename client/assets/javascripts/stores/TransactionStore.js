@@ -16,7 +16,7 @@ var TransactionStore = Reflux.createStore({
 
   fetchTransactions() {
     $.ajax({
-      url: '/periods/3/transactions.json',
+      url: '/periods/13/transactions.json',
       dataType: 'json',
       success: (data, code, err) => {
         this.transactions = data;
