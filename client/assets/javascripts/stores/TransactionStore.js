@@ -3,6 +3,7 @@
 import Reflux from 'reflux';
 import React from 'react/addons';
 import TransactionActions from '../actions/TransactionActions'
+import _ from 'lodash';
 
 var TransactionStore = Reflux.createStore({
   listenables: TransactionActions,
@@ -16,7 +17,7 @@ var TransactionStore = Reflux.createStore({
 
   fetchTransactions() {
     $.ajax({
-      url: '/periods/13/transactions.json',
+      url: '/periods/1/transactions.json',
       dataType: 'json',
       success: (data, code, err) => {
         this.transactions = data;
@@ -50,6 +51,17 @@ var TransactionStore = Reflux.createStore({
     this.fetchTransactions();
     // setInterval(this.fetchTransactions, 3600);
     return this.transactions;
+  },
+
+  getTransaction(transaction_id) {
+    // ES6: this.transactions.find(transaction => transaction.id == transaction_id);
+    return _.find(this.transactions, (transaction) => {
+      return transaction.id == transaction_id
+    });
+  },
+
+  onSelectTransaction(data) {
+    console.log('selectTransaction', data);
   },
 
   onAddTransaction(data) {

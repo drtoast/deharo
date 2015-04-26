@@ -1,21 +1,23 @@
 'use strict';
 
 import $ from 'jquery';
+import numeral from 'numeral';
 import React from 'react';
-
-// Next line is necessary for exposing React to browser for
-// the React Developer Tools: http://facebook.github.io/react/blog/2014/01/02/react-chrome-developer-tools.html
-// require("expose?React!react");
+import TransactionFormActions from '../actions/TransactionFormActions';
 
 var TransactionRow = React.createClass({
+  selectTransaction() {
+    TransactionFormActions.selectTransaction(this.props.transaction.id);
+  },
+
   render() {
     return (
-      <tr>
-        <td>{this.props.account_id}</td>
-        <td>{this.props.description}</td>
-        <td>{this.props.amount}</td>
-        <td>{this.props.created_at}</td>
-        <td>{this.props.tid}</td>
+      <tr className="transaction-row" onClick={this.selectTransaction}>
+        <td>{this.props.transaction.account_id}</td>
+        <td>{this.props.transaction.description}</td>
+        <td>{numeral(this.props.transaction.amount / 100).format('$0,0.00')}</td>
+        <td>{this.props.transaction.created_at}</td>
+        <td>{this.props.transaction.id}</td>
       </tr>
     );
   }

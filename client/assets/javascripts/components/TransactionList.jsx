@@ -1,9 +1,7 @@
 'use strict';
 
-import $ from 'jquery';
 import React from 'react';
 import Reflux from 'reflux';
-import numeral from 'numeral';
 import TransactionStore from '../stores/TransactionStore';
 import TransactionRow from './TransactionRow';
 
@@ -12,17 +10,14 @@ import TransactionRow from './TransactionRow';
 // require("expose?React!react");
 
 var TransactionList = React.createClass({
+  /* TODO: filter by selected period (this.state.period):
+    https://github.com/spoike/refluxjs#using-refluxconnectfilter */
   mixins: [Reflux.connect(TransactionStore,"transactions")],
 
   render() {
-    var transactionRows = this.state.transactions.map(function (data) {
+    var transactionRows = this.state.transactions.map(function (transaction) {
       return (
-        <TransactionRow
-          account_id={data.account_id}
-          description={data.description}
-          amount={numeral(data.amount / 100).format('$0,0.00')}
-          created_at={data.created_at}
-          tid={data.id} />
+        <TransactionRow transaction={transaction} />
       );
     });
 
