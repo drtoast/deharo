@@ -1,9 +1,11 @@
 'use strict';
 
+import _ from 'lodash';
 import React from 'react';
 import Reflux from 'reflux';
 import AccountStore from '../stores/AccountStore'
 import TransactionFormStore from '../stores/TransactionFormStore'
+import SharesEntryRow from './SharesEntryRow'
 
 var SharesEntry = React.createClass({
   mixins: [Reflux.ListenerMixin, Reflux.connect(AccountStore, "accounts")],
@@ -17,8 +19,10 @@ var SharesEntry = React.createClass({
   },
 
   onSelectTransaction(transaction) {
-    console.log('onSelectTransaction', transaction.shares)
-    this.setState({shares: transaction.shares})
+    let shares = {}
+    _.extend(shares, transaction.shares);
+    console.log(`SharesEntry: ${JSON.stringify(transaction.shares)} => ${JSON.stringify(shares)}`)
+    this.setState({shares: shares})
   },
 
   /*handleChange(event) {
@@ -39,13 +43,7 @@ var SharesEntry = React.createClass({
   render() {
     var accounts = this.state.accounts.map((account) => {
       return (
-        <div className="form-group">
-          <label className="col-sm-2 control-label">{account.name}</label>
-          <div className="col-sm-4">
-            <input className="form-control share" type="text" value={this.state.shares[account.id]} />
-            <span className="share-dollars" data-account-id={account.id}>$0.00</span>
-          </div>
-        </div>
+        <SharesEntryRow account={account} shares={this.state.shares[account.id]} />
       );
     });
 

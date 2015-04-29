@@ -1,5 +1,6 @@
 'use strict';
 
+import _ from 'lodash';
 import Reflux from 'reflux';
 import AccountActions from '../actions/AccountActions'
 
@@ -18,6 +19,13 @@ var AccountStore = Reflux.createStore({
         console.error('AccountStore#fetchAccounts', status, err.toString());
       }
     })
+  },
+
+  getAccount(account_id) {
+    // ES6: this.transactions.find(transaction => transaction.id == transaction_id);
+    return _.find(this.accounts, (account) => {
+      return account.id == account_id
+    });
   },
 
   getInitialState() {

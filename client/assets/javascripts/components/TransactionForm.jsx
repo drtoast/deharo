@@ -6,6 +6,7 @@ import React from 'react';
 import Reflux from 'reflux';
 import TransactionActions from '../actions/TransactionActions'
 import TransactionFormStore from '../stores/TransactionFormStore'
+import TransactionFormActions from '../actions/TransactionFormActions'
 import AccountSelect from './AccountSelect'
 import SharesEntry from './SharesEntry'
 
@@ -18,14 +19,15 @@ var TransactionForm = React.createClass({
   },
 
   getInitialState() {
-    return { amount: 0, description: '', accountID: '' }
+    return { amount: 0, description: '', accountID: '', transactionID: null, shares: {}, cents: {} }
   },
 
   onSelectTransaction(transaction) {
     this.setState({
       amount: transaction.amount,
       description: transaction.description,
-      accountID: transaction.account_id
+      accountID: transaction.account_id,
+      transactionID: transaction.id
     });
   },
 
@@ -45,13 +47,14 @@ var TransactionForm = React.createClass({
 
   handleDescriptionChange(e) {
     var description = React.findDOMNode(this.refs.description).value.trim();
-    this.setState({description: description})
+    /*this.setState({description: description})*/
+    TransactionFormActions.changeDescription(description);
   },
 
   handleAmountChange(e) {
     var dollars = React.findDOMNode(this.refs.amount).value.trim()
     var cents = numeral().unformat(dollars) * 100;
-    this.setState({amount: cents})
+    TransactionFormActions.changeAmount(cents);
   },
 
   render() {

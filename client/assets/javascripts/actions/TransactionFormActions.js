@@ -4,6 +4,9 @@ import Reflux from 'reflux';
 
 var TransactionFormActions = Reflux.createActions([
   "selectTransaction",
+  "changeShares",
+  "changeAmount",
+  "changeDescription",
   "saveTransaction"
 ]);
 
