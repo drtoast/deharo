@@ -7,7 +7,11 @@ var TransactionFormActions = Reflux.createActions([
   "changeShares",
   "changeAmount",
   "changeDescription",
-  "saveTransaction"
+  "changeAccount",
+  "equalizePersonalShares",
+  "equalizeBankShares",
+  "submitForm",
+  "resetForm"
 ]);
 
 export default TransactionFormActions;

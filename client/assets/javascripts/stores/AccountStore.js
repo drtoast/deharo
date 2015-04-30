@@ -7,6 +7,11 @@ import AccountActions from '../actions/AccountActions'
 var AccountStore = Reflux.createStore({
   listenables: AccountActions,
 
+  init() {
+    // this.accounts = [];
+    this.fetchAccounts();
+  },
+
   fetchAccounts() {
     $.ajax({
       url: '/accounts.json',
@@ -25,14 +30,11 @@ var AccountStore = Reflux.createStore({
     // ES6: this.transactions.find(transaction => transaction.id == transaction_id);
     return _.find(this.accounts, (account) => {
       return account.id == account_id
-    });
+    }) || {};
   },
 
   getInitialState() {
-    this.accounts = [];
-    this.fetchAccounts();
-    // setInterval(this.fetchAccounts, 3600);
-    return this.accounts;
+    return []
   }
 });
 

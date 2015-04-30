@@ -19,11 +19,17 @@ class PeriodsController < ApplicationController
   def index
     respond_to do |f|
       f.html { @periods = Period.all.order('created_at DESC') }
+
       f.csv do
         periods = Period.all.order(:created_at)
         @csv = CsvExport::Periods.new(periods)
         headers['Content-Disposition'] = "attachment; filename=\"deharo-periods.csv\""
         headers['Content-Type'] ||= 'text/csv'
+      end
+
+      f.json do
+        periods = Period.all.order('created_at DESC')
+        render json: periods.to_json
       end
     end
   end

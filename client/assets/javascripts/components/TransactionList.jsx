@@ -4,6 +4,7 @@ import React from 'react';
 import Reflux from 'reflux';
 import TransactionStore from '../stores/TransactionStore';
 import TransactionRow from './TransactionRow';
+import _ from 'lodash';
 
 // Next line is necessary for exposing React to browser for
 // the React Developer Tools: http://facebook.github.io/react/blog/2014/01/02/react-chrome-developer-tools.html
@@ -15,29 +16,29 @@ var TransactionList = React.createClass({
   mixins: [Reflux.connect(TransactionStore,"transactions")],
 
   render() {
-    var transactionRows = this.state.transactions.map(function (transaction) {
-      return (
-        <TransactionRow transaction={transaction} />
-      );
-    });
+    let sorted = _.sortByOrder(_.values(this.state.transactions), ['id'], [false]);
+    var transactionRows = sorted.map((transaction) => {
+        return (
+          <TransactionRow key={transaction.id} transaction={transaction} />
+        );
+      }
+    );
 
     return (
-      <div className="transactionList">
-        <table className="table table-striped">
-          <thead>
-            <tr>
-              <th>purchaser</th>
-              <th>description</th>
-              <th>amount</th>
-              <th>created</th>
-              <th>id</th>
-            </tr>
-          </thead>
-          <tbody>
-            {{ transactionRows }}
-          </tbody>
-        </table>
-      </div>
+      <table className="table table-striped">
+        <thead>
+          <tr>
+            <th>purchaser</th>
+            <th>description</th>
+            <th>amount</th>
+            <th>created</th>
+            <th>id</th>
+          </tr>
+        </thead>
+        <tbody>
+          {{ transactionRows }}
+        </tbody>
+      </table>
     );
   }
 });

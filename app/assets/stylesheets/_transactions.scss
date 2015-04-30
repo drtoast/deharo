@@ -1,6 +1,4 @@
-table td {
-  white-space: nowrap;
-}
+// @import "bootstrap";
 
 .share-dollars {
   position: absolute;
@@ -9,6 +7,11 @@ table td {
   margin-left: 10px;
 }
 
-.transaction-row {
+.table-striped tbody tr {
+  td {
+    white-space: nowrap;
+  }
+
   cursor: pointer;
+  &.highlight td { background-color: lighten($brand-warning, 30%); }
 }

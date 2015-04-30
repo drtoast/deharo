@@ -4,25 +4,39 @@ import _ from 'lodash';
 import Reflux from 'reflux';
 import React from 'react/addons';
 import TransactionFormActions from '../actions/TransactionFormActions'
+import TransactionActions from '../actions/TransactionActions'
 import TransactionStore from './TransactionStore'
+import AccountStore from './AccountStore'
+import TransactionCalculator from '../services/TransactionCalculator'
 
 var TransactionFormStore = Reflux.createStore({
   listenables: TransactionFormActions,
 
   init() {
-    this.transaction = { amount: 0, description: '', shares: {}, cents: {} };
+    this.initializeTransaction();
   },
 
   onSelectTransaction(transaction_id) {
     let transaction = TransactionStore.getTransaction(transaction_id);
     this.transaction = _.cloneDeep(transaction);
     this.calculateCents();
-    console.log('TransactionFormStore#onSelectTransaction', this.transaction.shares);
     this.trigger(this.transaction);
   },
 
   onChangeShares(accountID, shares) {
     this.transaction.shares[accountID] = shares;
+    this.calculateCents();
+    this.trigger(this.transaction);
+  },
+
+  onEqualizePersonalShares() {
+    this.setSharesByType({personal: 1, corporate: 0});
+    this.calculateCents();
+    this.trigger(this.transaction);
+  },
+
+  onEqualizeBankShares() {
+    this.setSharesByType({personal: 0, corporate: 1});
     this.calculateCents();
     this.trigger(this.transaction);
   },
@@ -33,31 +47,38 @@ var TransactionFormStore = Reflux.createStore({
     this.trigger(this.transaction);
   },
 
+  onChangeAccount(accountID) {
+    this.transaction.account_id = accountID;
+    this.trigger(this.transaction);
+  },
+
   onChangeDescription(description) {
     this.transaction.description = description;
     this.trigger(this.transaction);
   },
 
+  onSubmitForm() {
+    TransactionActions.saveTransaction(this.transaction);
+  },
+
+  onResetForm() {
+    this.initializeTransaction();
+    this.trigger(this.transaction);
+  },
+
   calculateCents() {
-    if(!this.transaction.hasOwnProperty('cents')) {
-      this.transaction.cents = {};
-    };
+    let calc = new TransactionCalculator(this.transaction);
+    calc.update();
+  },
 
-    let total = this.totalShares();
-
-    _.forOwn(this.transaction.shares, (shares, accountID) => {
-      let cents = (shares / total) * this.transaction.amount;
-      console.log(`calculateCents: ${accountID} => ${shares}/${total} * ${this.transaction.amount} = ${cents}`);
-      this.transaction.cents[accountID] = cents;
+  setSharesByType(values) {
+    AccountStore.accounts.forEach((account) => {
+      this.transaction.shares[account.id] = values[account.kind];
     });
   },
 
-  totalShares() {
-    let totalShares = 0;
-    _.forOwn(this.transaction.shares, (shares, accountID) => {
-      totalShares += parseInt(shares);
-    });
-    return totalShares;
+  initializeTransaction() {
+    this.transaction = { accountID: '', amount: 0, description: '', shares: {}, cents: {} };
   }
 });
 

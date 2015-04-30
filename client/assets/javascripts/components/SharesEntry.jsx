@@ -5,6 +5,7 @@ import React from 'react';
 import Reflux from 'reflux';
 import AccountStore from '../stores/AccountStore'
 import TransactionFormStore from '../stores/TransactionFormStore'
+import TransactionFormActions from '../actions/TransactionFormActions'
 import SharesEntryRow from './SharesEntryRow'
 
 var SharesEntry = React.createClass({
@@ -21,39 +22,33 @@ var SharesEntry = React.createClass({
   onSelectTransaction(transaction) {
     let shares = {}
     _.extend(shares, transaction.shares);
-    console.log(`SharesEntry: ${JSON.stringify(transaction.shares)} => ${JSON.stringify(shares)}`)
     this.setState({shares: shares})
   },
 
-  /*handleChange(event) {
-    var accountID = React.findDOMNode(this.refs.accountID).value
-    this.props.onAccountChange(accountID);
-  },*/
-
-  makeEqual(e) {
+  equalizePersonalShares(e) {
     e.preventDefault();
-    console.log("make equal");
+    TransactionFormActions.equalizePersonalShares();
   },
 
-  payBank(e) {
+  equalizeBankShares(e) {
     e.preventDefault();
-    console.log("pay bank");
+    TransactionFormActions.equalizeBankShares();
   },
 
   render() {
     var accounts = this.state.accounts.map((account) => {
       return (
-        <SharesEntryRow account={account} shares={this.state.shares[account.id]} />
+        <SharesEntryRow disabled={this.props.disabled} account={account} shares={this.state.shares[account.id]} />
       );
     });
 
     return (
       <div className="sharesEntry">
         <div className="form-group">
-          <label className="col-sm-2 control-label">Shares</label>
-          <div className="col-sm-4">
-            <a className="btn btn-default shares equalize" href="#" onClick={this.makeEqual}>Make Equal</a>
-            <a className="btn btn-default shares pay-rent" href="#" onClick={this.payBank}>Pay Bank</a>
+          <label className="col-sm-6 control-label">Shares</label>
+          <div className="col-sm-6">
+            <a disabled={this.props.disabled} className="btn btn-default shares equalize" href="#" onClick={this.equalizePersonalShares}>Make Equal</a>
+            <a disabled={this.props.disabled} className="btn btn-default shares pay-rent" href="#" onClick={this.equalizeBankShares}>Pay Bank</a>
           </div>
         </div>
 

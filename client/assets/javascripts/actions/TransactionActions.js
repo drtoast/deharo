@@ -3,11 +3,7 @@
 import Reflux from 'reflux';
 
 var TransactionActions = Reflux.createActions([
-  "editTransaction",
-  "addTransaction",
-  "updateTransaction",
-  "selectTransaction",
-  "changeTransaction"
+  "saveTransaction"
 ]);
 
 export default TransactionActions;

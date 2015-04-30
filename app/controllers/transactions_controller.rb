@@ -33,20 +33,46 @@ class TransactionsController < ApplicationController
     accounts
     @transaction = Transaction.find params[:id]
     if @transaction.period.open?
-      if @transaction.update_attributes(transaction_params)
-        flash[:notice] = "Transaction #{@transaction.id} updated"
-        redirect_to period_path(current_period)
+      @transaction.update_attributes(transaction_params)
+      if @transaction.errors.blank?
+        respond_to do |format|
+          format.html do
+            flash[:notice] = "Transaction #{@transaction.id} updated"
+            redirect_to period_path(current_period)
+          end
+
+          format.json do
+            render json: @transaction.to_json
+          end
+        end
       else
-        flash[:error] = "Can't update transaction: #{@transaction.errors.full_messages.to_sentence}"
-        period
-        render :edit
+        respond_to do |format|
+          format.html do
+            flash[:error] = "Can't update transaction: #{@transaction.errors.full_messages.to_sentence}"
+            period
+            render :edit
+          end
+
+          format.json do
+            render status: :forbidden, json: { errors: @transaction.errors.full_messages }
+          end
+        end
       end
     else
-      flash[:error] = "Can't update transaction: period is closed"
-      period
-      render :edit
+      respond_to do |format|
+        format.html do
+          flash[:error] = "Can't update transaction: period is closed"
+          period
+          render :edit
+        end
+
+        format.json do
+          render status: :forbidden, json: { errors: "Can't update transaction: period is closed"}
+        end
+      end
     end
   end
+
 
   def edit
     accounts

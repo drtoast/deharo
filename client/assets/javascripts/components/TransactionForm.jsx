@@ -5,40 +5,58 @@ import numeral from 'numeral'
 import React from 'react';
 import Reflux from 'reflux';
 import TransactionActions from '../actions/TransactionActions'
+import PeriodActions from '../actions/PeriodActions'
+import PeriodStore from '../stores/PeriodStore'
 import TransactionFormStore from '../stores/TransactionFormStore'
 import TransactionFormActions from '../actions/TransactionFormActions'
 import AccountSelect from './AccountSelect'
 import SharesEntry from './SharesEntry'
 
 var TransactionForm = React.createClass({
-  /*mixins: [Reflux.connect(TransactionFormStore,"transaction")],*/
   mixins: [Reflux.ListenerMixin],
 
   componentDidMount() {
     this.listenTo(TransactionFormStore, this.onSelectTransaction);
+    this.listenTo(PeriodActions.selectPeriod, this.onSelectPeriod);
   },
 
   getInitialState() {
-    return { amount: 0, description: '', accountID: '', transactionID: null, shares: {}, cents: {} }
+    return {
+      transaction: {
+        amount: 0,
+        description: '',
+        accountID: '',
+        transactionID: null,
+        shares: {},
+        cents: {}
+      }
+    }
   },
 
   onSelectTransaction(transaction) {
-    this.setState({
-      amount: transaction.amount,
-      description: transaction.description,
-      accountID: transaction.account_id,
-      transactionID: transaction.id
-    });
+    var period = PeriodStore.getPeriod(transaction.period_id);
+    var disabled;
+
+    if(period.status == 'closed') {
+      disabled = true;
+    } else {
+      disabled = false;
+    }
+    this.setState({transaction: transaction, disabled: disabled});
+  },
+
+  onSelectPeriod(period) {
+    TransactionFormActions.resetForm();
   },
 
   handleSubmit(e) {
     e.preventDefault();
-    TransactionActions.addTransaction({
-      description: this.state.description,
-      amount: this.state.amount,
-      account_id: this.state.accountID,
-      shares: { '1': 1 }
-    });
+    TransactionFormActions.submitForm();
+  },
+
+  handleReset(e) {
+    e.preventDefault();
+    TransactionFormActions.resetForm();
   },
 
   handleAccountChange(accountID) {
@@ -46,7 +64,7 @@ var TransactionForm = React.createClass({
   },
 
   handleDescriptionChange(e) {
-    var description = React.findDOMNode(this.refs.description).value.trim();
+    var description = React.findDOMNode(this.refs.description).value;
     /*this.setState({description: description})*/
     TransactionFormActions.changeDescription(description);
   },
@@ -58,34 +76,44 @@ var TransactionForm = React.createClass({
   },
 
   render() {
+    var submitButtonLabel, submitButtonClass;
+    if(this.state.transaction.hasOwnProperty('id')) {
+      submitButtonLabel = 'Update';
+      submitButtonClass = "btn btn-warning"
+    } else {
+      submitButtonLabel = 'Create';
+      submitButtonClass = "btn btn-primary"
+    };
+
     return (
       <form id="transactions-react" className="form-horizontal" onSubmit={this.handleSubmit}>
         <div className="form-group">
-          <label className="col-sm-2 control-label">Purchaser</label>
-          <div className="col-sm-4">
-            <AccountSelect onAccountChange={this.handleAccountChange} />
+          <label className="col-sm-6 control-label">Purchaser</label>
+          <div className="col-sm-6">
+            <AccountSelect disabled={this.state.disabled}/>
           </div>
         </div>
         <div className="form-group">
-          <label className="col-sm-2 control-label">Amount</label>
-          <div className="col-sm-4">
-            <input className="form-control" onChange={this.handleAmountChange} value={numeral(this.state.amount / 100).format('$0,0.00')} placeholder="Amount" ref="amount" type="text" />
+          <label className="col-sm-6 control-label">Amount</label>
+          <div className="col-sm-6">
+            <input disabled={this.state.disabled} className="form-control" onChange={this.handleAmountChange} value={numeral(this.state.transaction.amount / 100).format('$0,0.00')} placeholder="Amount" ref="amount" type="text" />
           </div>
         </div>
         <div className="form-group">
-          <label className="col-sm-2 control-label">Description</label>
-          <div className="col-sm-4">
-            <input className="form-control" onChange={this.handleDescriptionChange} value={this.state.description} placeholder="Description" ref="description" type="text" />
+          <label className="col-sm-6 control-label">Description</label>
+          <div className="col-sm-6">
+            <input disabled={this.state.disabled} className="form-control" onChange={this.handleDescriptionChange} value={this.state.transaction.description} placeholder="Description" ref="description" type="text" />
           </div>
         </div>
         <hr />
 
-        <SharesEntry />
+        <SharesEntry disabled={this.state.disabled} />
 
         <div className="form-group">
-          <div className="col-sm-2"></div>
-          <div className="col-sm-4">
-            <button className="btn btn-primary btn-block" type="submit">Submit</button>
+          <div className="col-sm-6"></div>
+          <div className="col-sm-6">
+            <button disabled={this.state.disabled} className={submitButtonClass} type="submit">{submitButtonLabel}</button>
+            <a className="btn btn-default" href="#" onClick={this.handleReset}>Reset</a>
           </div>
         </div>
       </form>
