@@ -2,7 +2,16 @@ class TransactionPresetsController < ApplicationController
   before_action :set_transaction, except: [:index]
 
   def index
-    @transaction_presets = TransactionPreset.all
+    respond_to do |format|
+      format.html do
+        @transaction_presets = TransactionPreset.all
+      end
+
+      format.json do
+        transaction_presets = TransactionPreset.all.map(&:transaction_template)
+        render json: transaction_presets
+      end
+    end
   end
 
   def create

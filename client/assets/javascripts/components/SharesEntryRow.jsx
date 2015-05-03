@@ -4,23 +4,26 @@ import numeral from 'numeral';
 import React from 'react';
 import Reflux from 'reflux';
 import TransactionFormStore from '../stores/TransactionFormStore';
+import TransactionActions from '../actions/TransactionActions';
 import TransactionFormActions from '../actions/TransactionFormActions';
 
 var SharesEntryRow = React.createClass({
   mixins: [Reflux.ListenerMixin],
 
   componentDidMount() {
+    this.listenTo(TransactionActions.selectTransaction, this.onSelectTransaction);
     this.listenTo(TransactionFormStore, this.onSelectTransaction);
   },
 
   onSelectTransaction(transaction) {
-    var shares = transaction.shares[this.props.account.id];
+    /*console.log('SharesEntryRow#onSelectTransaction', transaction, this.props.account.id)*/
+    var shares = transaction.shares[this.props.account.id] || 0;
     var cents = transaction.cents[this.props.account.id] || 0;
     this.setState({shares: shares, cents: cents});
   },
 
   getInitialState() {
-    return { shares: this.props.shares, cents: 0 }
+    return { shares: 0, cents: 0 }
   },
 
   handleSharesChange(e) {
@@ -29,6 +32,7 @@ var SharesEntryRow = React.createClass({
   },
 
   render() {
+    /*console.log('SharesEntryRow#render', this.state, this.props);*/
     return (
       <div className="form-group">
         <label className="col-sm-6 control-label">{this.props.account.name}</label>

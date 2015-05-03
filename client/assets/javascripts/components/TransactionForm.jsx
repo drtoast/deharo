@@ -1,35 +1,43 @@
 'use strict';
 
-import $ from 'jquery';
+import { formatTime, formatCents } from '../services/Formatters'
 import numeral from 'numeral'
-import React from 'react';
-import Reflux from 'reflux';
-import TransactionActions from '../actions/TransactionActions'
-import PeriodActions from '../actions/PeriodActions'
-import PeriodStore from '../stores/PeriodStore'
-import TransactionFormStore from '../stores/TransactionFormStore'
-import TransactionFormActions from '../actions/TransactionFormActions'
-import AccountSelect from './AccountSelect'
-import SharesEntry from './SharesEntry'
+import React from 'react'
+import Reflux from 'reflux'
+
+/* actions */
+import TransactionActions from      '../actions/TransactionActions'
+import PeriodActions from           '../actions/PeriodActions'
+import TransactionFormActions from  '../actions/TransactionFormActions'
+import PresetActions from           '../actions/PresetActions'
+
+/* stores */
+import PeriodStore from             '../stores/PeriodStore'
+import TransactionFormStore from    '../stores/TransactionFormStore'
+
+/* components */
+import AccountSelect from           './AccountSelect'
+import SharesEntry from             './SharesEntry'
+
 
 var TransactionForm = React.createClass({
-  mixins: [Reflux.ListenerMixin],
+  mixins: [Reflux.ListenerMixin, Reflux.connect(TransactionFormStore,"transaction")],
 
   componentDidMount() {
-    this.listenTo(TransactionFormStore, this.onSelectTransaction);
+    /*this.listenTo(TransactionFormActions.resetForm, this.onResetForm);*/
+    this.listenTo(TransactionActions.selectTransaction, this.onSelectTransaction);
+    this.listenTo(TransactionFormActions.saveTransactionSuccess, this.saveTransactionSuccess);
+    this.listenTo(TransactionFormActions.saveTransactionError, this.saveTransactionError);
+    this.listenTo(PresetActions.selectPreset, this.onSelectPreset);
     this.listenTo(PeriodActions.selectPeriod, this.onSelectPeriod);
   },
 
   getInitialState() {
     return {
-      transaction: {
-        amount: 0,
-        description: '',
-        accountID: '',
-        transactionID: null,
-        shares: {},
-        cents: {}
-      }
+      transaction: {},
+      amountDollars: '',
+      description: '',
+      disabled: false
     }
   },
 
@@ -37,47 +45,70 @@ var TransactionForm = React.createClass({
     var period = PeriodStore.getPeriod(transaction.period_id);
     var disabled;
 
-    if(period.status == 'closed') {
+    if (typeof(transaction.id) == 'number' && period.status == 'closed') {
       disabled = true;
     } else {
       disabled = false;
     }
-    this.setState({transaction: transaction, disabled: disabled});
+
+    this.setState({
+      description: transaction.description,
+      amountDollars: formatCents(transaction.amount),
+      disabled: disabled
+    });
   },
 
   onSelectPeriod(period) {
-    TransactionFormActions.resetForm();
+    this.setState(this.getInitialState());
+  },
+
+  onSelectPreset(preset) {
+    console.log('TransactionForm#onSelectPreset', preset);
+    this.setState({
+      description: preset.description,
+      amountDollars: formatCents(preset.amount),
+      disabled: false
+    })
   },
 
   handleSubmit(e) {
     e.preventDefault();
+    this.setState({disabled: true});
     TransactionFormActions.submitForm();
   },
 
   handleReset(e) {
-    e.preventDefault();
+    e && e.preventDefault();
+    this.setState(this.getInitialState());
     TransactionFormActions.resetForm();
-  },
-
-  handleAccountChange(accountID) {
-    this.setState({accountID: accountID})
   },
 
   handleDescriptionChange(e) {
     var description = React.findDOMNode(this.refs.description).value;
-    /*this.setState({description: description})*/
+    this.setState({description: description});
     TransactionFormActions.changeDescription(description);
   },
 
   handleAmountChange(e) {
-    var dollars = React.findDOMNode(this.refs.amount).value.trim()
+    var dollars = React.findDOMNode(this.refs.amountDollars).value.trim()
     var cents = numeral().unformat(dollars) * 100;
+    this.setState({amountDollars: dollars});
     TransactionFormActions.changeAmount(cents);
   },
 
+  saveTransactionSuccess(transaction) {
+    alert(`Transaction ${transaction.id} saved: "${transaction.description}"`);
+  },
+
+  saveTransactionError(error) {
+    this.setState({disabled: false});
+    alert(`Could not save transaction: ${error}`);
+  },
+
   render() {
+    console.log('TransactionForm#render', this.state)
     var submitButtonLabel, submitButtonClass;
-    if(this.state.transaction.hasOwnProperty('id')) {
+    if(typeof(this.state.transaction.id) == 'number') {
       submitButtonLabel = 'Update';
       submitButtonClass = "btn btn-warning"
     } else {
@@ -96,13 +127,13 @@ var TransactionForm = React.createClass({
         <div className="form-group">
           <label className="col-sm-6 control-label">Amount</label>
           <div className="col-sm-6">
-            <input disabled={this.state.disabled} className="form-control" onChange={this.handleAmountChange} value={numeral(this.state.transaction.amount / 100).format('$0,0.00')} placeholder="Amount" ref="amount" type="text" />
+            <input disabled={this.state.disabled} className="form-control" onChange={this.handleAmountChange} value={this.state.amountDollars} placeholder="Amount" ref="amountDollars" type="text" />
           </div>
         </div>
         <div className="form-group">
           <label className="col-sm-6 control-label">Description</label>
           <div className="col-sm-6">
-            <input disabled={this.state.disabled} className="form-control" onChange={this.handleDescriptionChange} value={this.state.transaction.description} placeholder="Description" ref="description" type="text" />
+            <input disabled={this.state.disabled} className="form-control" onChange={this.handleDescriptionChange} value={this.state.description} placeholder="Description" ref="description" type="text" />
           </div>
         </div>
         <hr />

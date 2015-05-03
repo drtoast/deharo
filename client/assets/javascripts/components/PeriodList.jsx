@@ -10,7 +10,6 @@ var PeriodList = React.createClass({
 
   render() {
     var periodRows = this.state.periods.map((period) => {
-      console.log('period', period);
       return (
         <PeriodRow key={period.id} period={period} />
       );

@@ -6,6 +6,7 @@ import TransactionForm from './TransactionForm';
 import TransactionList from './TransactionList';
 import BalanceList from './BalanceList';
 import PeriodList from './PeriodList';
+import PresetList from './PresetList';
 
 var DeHaroApp = React.createClass({
   render() {
@@ -19,6 +20,7 @@ var DeHaroApp = React.createClass({
             <li role="presentation"><a href="#periods-panel" aria-controls="profile" role="tab" data-toggle="tab">Periods</a></li>
             <li role="presentation" className="active"><a href="#transactions-panel" aria-controls="home" role="tab" data-toggle="tab">Transactions</a></li>
             <li role="presentation"><a href="#balances-panel" aria-controls="profile" role="tab" data-toggle="tab">Balances</a></li>
+            <li role="presentation"><a href="#presets-panel" aria-controls="profile" role="tab" data-toggle="tab">Presets</a></li>
           </ul>
           <div className="tab-content">
             <div role="tabpanel" className="tab-pane" id="periods-panel">
@@ -29,6 +31,9 @@ var DeHaroApp = React.createClass({
             </div>
             <div role="tabpanel" className="tab-pane" id="balances-panel">
               <BalanceList />
+            </div>
+            <div role="tabpanel" className="tab-pane" id="presets-panel">
+              <PresetList />
             </div>
           </div>
         </div>

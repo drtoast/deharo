@@ -54,7 +54,7 @@ class TransactionsController < ApplicationController
           end
 
           format.json do
-            render status: :forbidden, json: { errors: @transaction.errors.full_messages }
+            render status: :unprocessable_entity, json: { errors: @transaction.errors.full_messages }
           end
         end
       end

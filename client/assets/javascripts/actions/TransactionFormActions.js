@@ -3,7 +3,6 @@
 import Reflux from 'reflux';
 
 var TransactionFormActions = Reflux.createActions([
-  "selectTransaction",
   "changeShares",
   "changeAmount",
   "changeDescription",
@@ -11,7 +10,9 @@ var TransactionFormActions = Reflux.createActions([
   "equalizePersonalShares",
   "equalizeBankShares",
   "submitForm",
-  "resetForm"
+  "resetForm",
+  "saveTransactionSuccess",
+  "saveTransactionError"
 ]);
 
 export default TransactionFormActions;

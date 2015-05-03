@@ -5,6 +5,7 @@ import React from 'react';
 import Reflux from 'reflux';
 import AccountStore from '../stores/AccountStore'
 import TransactionFormStore from '../stores/TransactionFormStore'
+import TransactionActions from '../actions/TransactionActions'
 import TransactionFormActions from '../actions/TransactionFormActions'
 import SharesEntryRow from './SharesEntryRow'
 
@@ -12,7 +13,7 @@ var SharesEntry = React.createClass({
   mixins: [Reflux.ListenerMixin, Reflux.connect(AccountStore, "accounts")],
 
   componentDidMount() {
-    this.listenTo(TransactionFormStore, this.onSelectTransaction);
+    this.listenTo(TransactionActions.selectTransaction, this.onSelectTransaction);
   },
 
   getInitialState() {
@@ -20,9 +21,11 @@ var SharesEntry = React.createClass({
   },
 
   onSelectTransaction(transaction) {
-    let shares = {}
-    _.extend(shares, transaction.shares);
-    this.setState({shares: shares})
+    this.setState({
+      transaction: transaction,
+      shares: _.cloneDeep(transaction.shares),
+      cents: transaction.shares
+    })
   },
 
   equalizePersonalShares(e) {

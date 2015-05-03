@@ -11,11 +11,15 @@ var AccountSelect = React.createClass({
 
   componentDidMount() {
     this.listenTo(TransactionFormStore, this.onSelectTransaction);
+    this.listenTo(TransactionFormActions.resetForm, this.onResetForm);
   },
 
   onSelectTransaction(transaction) {
-    console.log('onSelectTransaction', transaction);
     this.setState({accountID: transaction.account_id});
+  },
+
+  onResetForm() {
+    this.setState({accountID: ''});
   },
 
   getInitialState() {

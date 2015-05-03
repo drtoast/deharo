@@ -43,7 +43,7 @@ var BalanceStore = Reflux.createStore({
     });
 
     let period = PeriodStore.getPeriod(periodID);
-    console.log('updateBalances', transactions, periodID, period);
+    // console.log('updateBalances', transactions, periodID, period);
 
     AccountStore.accounts.forEach((account) => {
       let balances = this.balances[account.id];

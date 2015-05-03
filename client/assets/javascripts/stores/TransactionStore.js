@@ -4,6 +4,7 @@ import Reflux from 'reflux';
 import React from 'react/addons';
 import TransactionActions from '../actions/TransactionActions'
 import PeriodActions from '../actions/PeriodActions';
+import TransactionFormActions from '../actions/TransactionFormActions';
 
 import _ from 'lodash';
 
@@ -83,11 +84,20 @@ var TransactionStore = Reflux.createStore({
       },
       data: {
         transaction: transaction
-      },
-      success: (data, status, err) => {
-        this.transactions[data.id] = data;
-        this.trigger(this.transactions);
       }
+    }).done((data, status, xhr) => {
+      this.transactions[data.id] = data;
+      TransactionActions.selectTransaction(data);
+      TransactionFormActions.saveTransactionSuccess(data);
+      this.trigger(this.transactions);
+    }).fail((xhr, status, error) => {
+      let message = error;
+      
+      try {
+        message = xhr.responseJSON.errors.join(', ');
+      } catch (e) {}
+
+      TransactionFormActions.saveTransactionError(message);
     })
   }
 });
