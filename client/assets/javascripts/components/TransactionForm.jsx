@@ -22,12 +22,14 @@ import SharesEntry from             './SharesEntry'
 
 var TransactionForm = React.createClass({
   mixins: [Reflux.ListenerMixin, Reflux.connect(TransactionFormStore,"transaction")],
+  listenables: [TransactionActions],
 
   componentDidMount() {
-    /*this.listenTo(TransactionFormActions.resetForm, this.onResetForm);*/
     this.listenTo(TransactionActions.selectTransaction, this.onSelectTransaction);
-    this.listenTo(TransactionFormActions.saveTransactionSuccess, this.saveTransactionSuccess);
-    this.listenTo(TransactionFormActions.saveTransactionError, this.saveTransactionError);
+    this.listenTo(TransactionActions.saveTransaction.completed, this.onSaveTransactionCompleted);
+    this.listenTo(TransactionActions.saveTransaction.failed, this.onSaveTransactionFailed);
+    this.listenTo(TransactionActions.deleteTransaction.completed, this.deleteTransactionSuccess);
+    this.listenTo(TransactionActions.deleteTransaction.failed, this.onDeleteTransactionFailed);
     this.listenTo(PresetActions.selectPreset, this.onSelectPreset);
     this.listenTo(PeriodActions.selectPeriod, this.onSelectPeriod);
   },
@@ -37,7 +39,7 @@ var TransactionForm = React.createClass({
       transaction: {},
       amountDollars: '',
       description: '',
-      disabled: false
+      disabled: false,
     }
   },
 
@@ -77,6 +79,11 @@ var TransactionForm = React.createClass({
     TransactionFormActions.submitForm();
   },
 
+  handleDelete(e) {
+    e.preventDefault();
+    TransactionFormActions.deleteTransaction();
+  },
+
   handleReset(e) {
     e && e.preventDefault();
     this.setState(this.getInitialState());
@@ -96,13 +103,20 @@ var TransactionForm = React.createClass({
     TransactionFormActions.changeAmount(cents);
   },
 
-  saveTransactionSuccess(transaction) {
-    alert(`Transaction ${transaction.id} saved: "${transaction.description}"`);
+  onSaveTransactionCompleted(transaction) {
+    this.setState({disabled: false});
   },
 
-  saveTransactionError(error) {
+  onSaveTransactionFailed(xhr, status, error) {
     this.setState({disabled: false});
-    alert(`Could not save transaction: ${error}`);
+  },
+
+  onDeleteTransactionCompleted(transaction) {
+    this.setState({disabled: false});
+  },
+
+  onDeleteTransactionFailed(transaction, error) {
+    this.setState({disabled: false});
   },
 
   render() {
@@ -119,20 +133,20 @@ var TransactionForm = React.createClass({
     return (
       <form id="transactions-react" className="form-horizontal" onSubmit={this.handleSubmit}>
         <div className="form-group">
-          <label className="col-sm-6 control-label">Purchaser</label>
-          <div className="col-sm-6">
+          <label className="col-sm-4 control-label">Purchaser</label>
+          <div className="col-sm-8">
             <AccountSelect disabled={this.state.disabled}/>
           </div>
         </div>
         <div className="form-group">
-          <label className="col-sm-6 control-label">Amount</label>
-          <div className="col-sm-6">
+          <label className="col-sm-4 control-label">Amount</label>
+          <div className="col-sm-8">
             <input disabled={this.state.disabled} className="form-control" onChange={this.handleAmountChange} value={this.state.amountDollars} placeholder="Amount" ref="amountDollars" type="text" />
           </div>
         </div>
         <div className="form-group">
-          <label className="col-sm-6 control-label">Description</label>
-          <div className="col-sm-6">
+          <label className="col-sm-4 control-label">Description</label>
+          <div className="col-sm-8">
             <input disabled={this.state.disabled} className="form-control" onChange={this.handleDescriptionChange} value={this.state.description} placeholder="Description" ref="description" type="text" />
           </div>
         </div>
@@ -141,10 +155,11 @@ var TransactionForm = React.createClass({
         <SharesEntry disabled={this.state.disabled} />
 
         <div className="form-group">
-          <div className="col-sm-6"></div>
-          <div className="col-sm-6">
+          <div className="col-sm-4"></div>
+          <div className="col-sm-8">
             <button disabled={this.state.disabled} className={submitButtonClass} type="submit">{submitButtonLabel}</button>
-            <a className="btn btn-default" href="#" onClick={this.handleReset}>Reset</a>
+            <a disabled={this.state.disabled} className="btn btn-danger" href="#" onClick={this.handleDelete}>Delete</a>
+            <a className="btn btn-default" href="#" onClick={this.handleReset}>Clear</a>
           </div>
         </div>
       </form>

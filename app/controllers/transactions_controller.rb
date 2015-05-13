@@ -20,12 +20,18 @@ class TransactionsController < ApplicationController
         end
 
         format.json do
-          render json: @transaction.to_json
+          render status: 201, json: @transaction.to_json
         end
       end
     else
-      flash[:error] = "Can't create transaction: #{@transaction.errors.full_messages.to_sentence}"
-      render :new
+      respond_to do |format|
+        format.html do
+          flash[:error] = "Can't create transaction: #{@transaction.errors.full_messages.to_sentence}"
+          render :new
+        end
+
+        format.json { render_unprocessable_entity }
+      end
     end
   end
 
@@ -53,9 +59,7 @@ class TransactionsController < ApplicationController
             render :edit
           end
 
-          format.json do
-            render status: :unprocessable_entity, json: { errors: @transaction.errors.full_messages }
-          end
+          format.json { render_unprocessable_entity }
         end
       end
     else
@@ -84,11 +88,23 @@ class TransactionsController < ApplicationController
     @transaction = Transaction.find params[:id]
     if @transaction.period.open?
       if @transaction.destroy
-        flash[:notice] = "Transaction deleted"
-        redirect_to period_path(current_period)
+        respond_to do |format|
+          format.html do
+            flash[:notice] = "Transaction deleted"
+            redirect_to period_path(current_period)
+          end
+
+          format.json do
+            head :no_content, status: 204
+          end
+        end
       else
-        flash[:error] = "Can't delete transaction: #{@transaction.errors.full_messages.to_sentence}"
-        render :edit
+        format.html do
+          flash[:error] = "Can't delete transaction: #{@transaction.errors.full_messages.to_sentence}"
+          render :edit
+        end
+
+        format.json { render_unprocessable_entity }
       end
     else
       flash[:error] = "Can't delete transaction: period is closed"
@@ -138,5 +154,9 @@ class TransactionsController < ApplicationController
     p[:account_id] = params[:account_id] if params[:account_id]
     p[:shares][params[:share_id]] = 1 if params[:share_id]
     p
+  end
+
+  def render_unprocessable_entity
+    render status: :unprocessable_entity, json: { errors: @transaction.errors.full_messages }
   end
 end

@@ -35,8 +35,8 @@ var SharesEntryRow = React.createClass({
     /*console.log('SharesEntryRow#render', this.state, this.props);*/
     return (
       <div className="form-group">
-        <label className="col-sm-6 control-label">{this.props.account.name}</label>
-        <div className="col-sm-6">
+        <label className="col-sm-4 control-label">{this.props.account.name}</label>
+        <div className="col-sm-8">
           <input disabled={this.props.disabled} className="form-control share" ref="shares" type="text" value={this.state.shares} onChange={this.handleSharesChange}/>
           <span className="share-dollars">{numeral(this.state.cents / 100).format('$0,0.00')}</span>
         </div>

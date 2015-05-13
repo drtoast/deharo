@@ -48,8 +48,8 @@ var SharesEntry = React.createClass({
     return (
       <div className="sharesEntry">
         <div className="form-group">
-          <label className="col-sm-6 control-label">Shares</label>
-          <div className="col-sm-6">
+          <label className="col-sm-4 control-label">Shares</label>
+          <div className="col-sm-8">
             <a disabled={this.props.disabled} className="btn btn-default shares equalize" href="#" onClick={this.equalizePersonalShares}>Make Equal</a>
             <a disabled={this.props.disabled} className="btn btn-default shares pay-rent" href="#" onClick={this.equalizeBankShares}>Pay Bank</a>
           </div>

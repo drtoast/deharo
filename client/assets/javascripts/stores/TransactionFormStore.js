@@ -80,6 +80,10 @@ var TransactionFormStore = Reflux.createStore({
     TransactionActions.saveTransaction(this.transaction);
   },
 
+  onDeleteTransaction() {
+    TransactionActions.deleteTransaction(this.transaction);
+  },
+
   onResetForm() {
     this.initializeTransaction();
     this.trigger(this.transaction);

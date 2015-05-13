@@ -7,15 +7,17 @@ import TransactionList from './TransactionList';
 import BalanceList from './BalanceList';
 import PeriodList from './PeriodList';
 import PresetList from './PresetList';
+import Alert from './Alert';
 
 var DeHaroApp = React.createClass({
   render() {
     return (
       <div className="deHaroApp row">
-        <div className='col-md-6 col-sm-12'>
+        <Alert />
+        <div className='col-md-5 col-sm-12'>
           <TransactionForm />
         </div>
-        <div className='col-md-6 col-sm-12' role="tabpanel">
+        <div className='col-md-7 col-sm-12' role="tabpanel">
           <ul className="nav nav-tabs" role="tablist">
             <li role="presentation"><a href="#periods-panel" aria-controls="profile" role="tab" data-toggle="tab">Periods</a></li>
             <li role="presentation" className="active"><a href="#transactions-panel" aria-controls="home" role="tab" data-toggle="tab">Transactions</a></li>
