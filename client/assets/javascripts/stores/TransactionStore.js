@@ -16,9 +16,27 @@ var TransactionStore = Reflux.createStore({
     this.listenTo(PeriodActions.selectPeriod, this.onSelectPeriod)
   },
 
+  getInitialState() {
+    return {};
+  },
+
   onSelectPeriod(period) {
     this.fetchTransactions(period);
   },
+
+
+  // GET TRANSACTIONS
+
+  getTransaction(transaction_id) {
+    return this.transactions[transaction_id];
+  },
+
+  getTransactions() {
+    return _.sortByOrder(_.values(this.transactions), ['id'], [false]);
+  },
+
+
+  // FETCH TRANSACTIONS
 
   fetchTransactions(period) {
     $.ajax({
@@ -34,7 +52,6 @@ var TransactionStore = Reflux.createStore({
     data.forEach((transaction) => {
       this.transactions[transaction.id] = transaction;
     });
-    AlertActions.success(`Loaded transactions`);
     this.trigger(this.transactions);
   },
 
@@ -42,16 +59,22 @@ var TransactionStore = Reflux.createStore({
     AlertActions.error(`Couldn't load transactions: ${err}`);
   },
 
-  getInitialState() {
-    return {};
-  },
 
-  getTransaction(transaction_id) {
-    return this.transactions[transaction_id];
-  },
+  // SAVE TRANSACTION
 
-  getTransactions() {
-    return _.sortByOrder(_.values(this.transactions), ['id'], [false]);
+  onSaveTransaction(transaction) {
+    $.ajax({
+      url: this._saveTransactionUrl(transaction),
+      method: this._saveTransactionMethod(transaction),
+      beforeSend(xhr) {
+        xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))
+      },
+      data: {
+        transaction: transaction
+      }
+    })
+    .done(TransactionActions.saveTransaction.completed)
+    .fail(TransactionActions.saveTransaction.failed)
   },
 
   _saveTransactionUrl(transaction) {
@@ -70,25 +93,6 @@ var TransactionStore = Reflux.createStore({
     }
   },
 
-  _deleteTransactionUrl(transaction) {
-    return `/transactions/${transaction.id}.json`
-  },
-
-  onSaveTransaction(transaction) {
-    $.ajax({
-      url: this._saveTransactionUrl(transaction),
-      method: this._saveTransactionMethod(transaction),
-      beforeSend(xhr) {
-        xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))
-      },
-      data: {
-        transaction: transaction
-      }
-    })
-    .done(TransactionActions.saveTransaction.completed)
-    .fail(TransactionActions.saveTransaction.failed)
-  },
-
   onSaveTransactionCompleted(data, status, xhr) {
     this.transactions[data.id] = data;
     AlertActions.success(`Transaction ${data.id} Saved`);
@@ -100,6 +104,9 @@ var TransactionStore = Reflux.createStore({
     AlertActions.error(`Couldn't save transaction: ${errors}`);
     this.trigger(this.transactions);
   },
+
+
+  // DELETE TRANSACTION
 
   onDeleteTransaction(transaction) {
     $.ajax({
@@ -118,7 +125,12 @@ var TransactionStore = Reflux.createStore({
     AlertActions.success(`Transaction ${data.id} Deleted`);
     delete this.transactions[data.id];
     this.trigger(this.transactions);
-  }
+  },
+
+  _deleteTransactionUrl(transaction) {
+    return `/transactions/${transaction.id}.json`
+  },
+
 });
 
 export default TransactionStore;

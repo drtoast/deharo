@@ -3,14 +3,12 @@
 import _ from 'lodash';
 import React from 'react';
 import Reflux from 'reflux';
-import PresetStore from '../stores/PresetStore';
 import PresetRow from './PresetRow';
 
 var PresetList = React.createClass({
-  mixins: [Reflux.connect(PresetStore,"presets")],
 
   render() {
-    var presetRows = _.values(this.state.presets).map((preset) => {
+    var presetRows = _.values(this.props.presets).map((preset) => {
       return (
         <PresetRow key={preset.id} preset={preset} />
       );

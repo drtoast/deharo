@@ -1,15 +1,11 @@
 'use strict';
 
 import React from 'react';
-import Reflux from 'reflux';
-import PeriodStore from '../stores/PeriodStore';
 import PeriodRow from './PeriodRow';
 
 var PeriodList = React.createClass({
-  mixins: [Reflux.connect(PeriodStore,"periods")],
-
   render() {
-    var periodRows = this.state.periods.map((period) => {
+    var periodRows = this.props.periods.map((period) => {
       return (
         <PeriodRow key={period.id} period={period} />
       );

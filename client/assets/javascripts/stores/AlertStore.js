@@ -8,14 +8,8 @@ import AlertActions from '../actions/AlertActions';
 var AlertStore = Reflux.createStore({
   listenables: AlertActions,
 
-  init() {
-    this.alert = { level: 'success', message: 'Hello Alert Store', visible: true }
-  },
-
-  onCreateAlert(alert) {
-    _.assign(this.alert, alert);
-    this.alert.visible = true;
-    this.trigger(this.alert);
+  getInitialState() {
+    return { alert: { level: 'success', message: '', visible: false } }
   },
 
   onSuccess(message) {
@@ -35,12 +29,25 @@ var AlertStore = Reflux.createStore({
   },
 
   _triggerAlert(level, message) {
-    this.alert.level = level;
-    this.alert.message = message;
-    this.alert.visible = true;
-    this.trigger(this.alert);
-  }
+    this.alert = {
+      level: level,
+      message: message,
+      visible: true
+    }
 
+    this.trigger(this.alert);
+
+    if(level == 'success') {
+      if(this._timeout) {
+        clearTimeout(this._timeout)
+      }
+
+      this._timeout = setTimeout(() => {
+        this.alert.visible = false;
+        this.trigger(this.alert);
+      }, 3000)
+    }
+  }
 })
 
 export default AlertStore;
