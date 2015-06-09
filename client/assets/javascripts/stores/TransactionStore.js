@@ -100,7 +100,13 @@ var TransactionStore = Reflux.createStore({
   },
 
   onSaveTransactionFailed(xhr, status, error) {
-    let errors = xhr.responseJSON.errors.join(', ');
+    let errors;
+    if(xhr.hasOwnProperty('responseJSON')) {
+      errors = xhr.responseJSON.errors.join(', ');
+    } else {
+      errors = `${xhr.statusText} (${xhr.status})`
+    }
+
     AlertActions.error(`Couldn't save transaction: ${errors}`);
     this.trigger(this.transactions);
   },

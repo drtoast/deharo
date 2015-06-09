@@ -121,13 +121,14 @@ var TransactionForm = React.createClass({
 
   render() {
     console.log('TransactionForm#render', this.state)
-    var submitButtonLabel, submitButtonClass;
+    var submitButtonLabel, submitButtonClass, deleteButton;
     if(typeof(this.state.transaction.id) == 'number') {
       submitButtonLabel = 'Update';
-      submitButtonClass = "btn btn-warning"
+      submitButtonClass = "btn btn-block btn-warning"
+      deleteButton = <a disabled={this.state.disabled} className="btn btn-block btn-danger" href="#" onClick={this.handleDelete}>Delete</a>
     } else {
       submitButtonLabel = 'Create';
-      submitButtonClass = "btn btn-primary"
+      submitButtonClass = "btn btn-block btn-primary"
     };
 
     return (
@@ -158,8 +159,8 @@ var TransactionForm = React.createClass({
           <div className="col-sm-4"></div>
           <div className="col-sm-8">
             <button disabled={this.state.disabled} className={submitButtonClass} type="submit">{submitButtonLabel}</button>
-            <a disabled={this.state.disabled} className="btn btn-danger" href="#" onClick={this.handleDelete}>Delete</a>
-            <a className="btn btn-default" href="#" onClick={this.handleReset}>Clear</a>
+            {deleteButton}
+            <a className="btn btn-block btn-default" href="#" onClick={this.handleReset}>Clear</a>
           </div>
         </div>
       </form>
