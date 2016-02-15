@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 
 # Heroku uses the ruby version to configure your application's runtime.
-ruby '2.0.0'
+ruby '2.2.4'
 
 gem 'unicorn'
 gem 'rack-canonical-host'
@@ -25,20 +25,14 @@ gem 'therubyracer', platforms: :ruby
 
 group :test, :development do
   gem 'pry'
-  gem 'pry-debugger'
   gem 'rspec-rails'
   gem 'capybara'
-  #gem 'capybara-email'
   gem 'poltergeist'
   gem 'factory_girl_rails'
   gem 'database_cleaner'
   gem 'fuubar'
   gem 'jasminerice', github: 'bradphelan/jasminerice' # Latest release still depends on haml.
-  #gem 'timecop'
   gem 'simplecov'
-  #gem 'cane'
-  #gem 'morecane'
-  #gem 'quiet_assets'
 end
 
 group :development do
@@ -46,12 +40,6 @@ group :development do
   gem 'launchy'
   gem 'better_errors'
   gem 'binding_of_caller'
-  gem 'guard'
-  gem 'guard-rspec'
-  gem 'guard-jasmine'
-  gem 'guard-livereload'
-  gem 'rb-fsevent'
-  gem 'growl'
 end
 
 group :production do
