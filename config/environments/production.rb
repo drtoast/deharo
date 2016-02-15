@@ -20,7 +20,7 @@ Deharo::Application.configure do
   # config.action_dispatch.rack_cache = true
 
   # When deploying to Heroku, the app must serve static assets (or serve them from a CDN).
-  config.serve_static_assets = true
+  config.serve_static_files = true
 
   # Compress JavaScripts and CSS.
   config.assets.js_compressor = :uglifier
