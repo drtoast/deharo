@@ -54,16 +54,16 @@ describe TransactionPresetsController do
     end
 
     describe "with invalid params" do
+      before do
+        expect_any_instance_of(TransactionPreset).to receive(:save).and_return(false)
+      end
+
       it "assigns a newly created but unsaved transaction_preset as @transaction_preset" do
-        # Trigger the behavior that occurs when invalid params are submitted
-        TransactionPreset.any_instance.stub(:save).and_return(false)
         post :create, { transaction_id: transaction.to_param }, valid_session
         expect(assigns(:transaction_preset)).to be_a_new(TransactionPreset)
       end
 
       it "redirects to the transaction" do
-        # Trigger the behavior that occurs when invalid params are submitted
-        TransactionPreset.any_instance.stub(:save).and_return(false)
         post :create, { transaction_id: transaction.to_param }, valid_session
         expect(response).to redirect_to(edit_period_transaction_path(period, transaction))
       end

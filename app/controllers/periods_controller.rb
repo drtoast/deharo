@@ -28,9 +28,6 @@ class PeriodsController < ApplicationController
     end
   end
 
-  def update
-  end
-
   def close
     @period = Period.find params[:id]
     if @period.close!(Account.all)

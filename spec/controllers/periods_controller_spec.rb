@@ -1,26 +1,19 @@
 require 'spec_helper'
 
 describe PeriodsController do
+  let(:period) { Period.create! }
 
-    describe "GET 'show'" do
-    pending "returns http success" do
-      get 'show'
+  describe "GET 'show'" do
+    it "returns http success" do
+      get 'show', id: period.id
       expect(response).to be_success
     end
   end
 
   describe "GET 'index'" do
-    pending "returns http success" do
+    it "returns http success" do
       get 'index'
       expect(response).to be_success
     end
   end
-
-  describe "GET 'update'" do
-    pending "returns http success" do
-      get 'update'
-      expect(response).to be_success
-    end
-  end
-
 end
